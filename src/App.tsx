@@ -3,6 +3,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebaseConfig';
 import HouseInfo204 from './components/HouseInfo204';
+import BankTransferForm204 from './components/BankTransferForm204';
+import Room204 from './components/Room204';
+import UserPage204 from './components/UserPage204';
 
 // Lazy load components
 const AdminPage = lazy(() => import('./components/AdminPage'));
@@ -46,14 +49,17 @@ const App: React.FC = () => {
                     <Route path="/admin" element={user?.email === 'admin@salaya.com' ? <AdminPage /> : <Navigate to="/login" />} />
                     <Route path='/UserPage201' element={<UserPage201 />} />
                     <Route path='/UserPage202' element={<UserPage202 />} />
+                    <Route path='/UserPage204' element={<UserPage204 />} />
                     <Route path="/houseinfo201" element={user ? <HouseInfo201 /> : <Navigate to="/login" />} />
                     <Route path="/houseinfo202" element={user ? <HouseInfo202 /> : <Navigate to="/login" />} />
                     <Route path="/houseinfo204" element={user ? <HouseInfo204 /> : <Navigate to="/login" />} />
                     <Route path="/room201" element={user ? <Room201 /> : <Navigate to="/login" />} />
                     <Route path="/room202" element={user ? <Room202 /> : <Navigate to="/login" />} />
+                    <Route path="/room204" element={user ? <Room204 /> : <Navigate to="/login" />} />
                     <Route path="/" element={<Home />} />
                     <Route path='/bank201' element={<BankTransferForm201 />} />
                     <Route path='/bank202' element={<BankTransferForm202 />} />
+                    <Route path='/bank204' element={<BankTransferForm204 />} />
                     <Route path='/paymenthistory201' element={<PaymentHistory201 />} />
                     <Route path='/paymenthistory202' element={<PaymentHistory202 />} />
                     <Route path='/allowpayment201' element={<Allowpayment201 />} />
