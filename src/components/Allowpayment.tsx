@@ -10,6 +10,10 @@ import Allowpayment205 from './Allowpayment205';
 const Allowpayment: React.FC = () => {
     const [isHouse201Visible, setHouse201Visible] = useState(false);
     const [isHouse202Visible, setHouse202Visible] = useState(false);
+    const [isHouse204Visible, setHouse204Visible] = useState(false);
+    const [isHouse205Visible, setHouse205Visible] = useState(false);
+    const [isHouse206Visible, setHouse206Visible] = useState(false);
+
 
     const toggleHouse201Info = () => {
         setHouse201Visible(prevState => !prevState);
@@ -17,6 +21,18 @@ const Allowpayment: React.FC = () => {
 
     const toggleHouse202Info = () => {
         setHouse202Visible(prevState => !prevState);
+    };
+
+    const toggleHouse204Info = () => {
+        setHouse204Visible(prevState => !prevState);
+    };
+
+    const toggleHouse205Info = () => {
+        setHouse205Visible(prevState => !prevState);
+    };
+
+    const toggleHouse206Info = () => {
+        setHouse206Visible(prevState => !prevState);
     };
 
     return (
@@ -35,22 +51,22 @@ const Allowpayment: React.FC = () => {
                 {isHouse202Visible && <Allowpayment202 />}
             </div>
             <div className='allow-payment-section'>
-                <button onClick={toggleHouse202Info}>
-                    {isHouse202Visible ? 'ซ่อน 204 ขออนุญาตชำระ' : '204 ขออนุญาตชำระ'}
+                <button onClick={toggleHouse204Info}>
+                    {isHouse204Visible ? 'ซ่อน 204 ขออนุญาตชำระ' : '204 ขออนุญาตชำระ'}
                 </button>
-                {isHouse202Visible && <Allowpayment204 />}
+                {isHouse204Visible && <Allowpayment204 />}
             </div>
             <div className='allow-payment-section'>
-                <button onClick={toggleHouse202Info}>
-                    {isHouse202Visible ? 'ซ่อน 205 ขออนุญาตชำระ' : '205 ขออนุญาตชำระ'}
+                <button onClick={toggleHouse205Info}>
+                    {isHouse205Visible ? 'ซ่อน 205 ขออนุญาตชำระ' : '205 ขออนุญาตชำระ'}
                 </button>
-                {isHouse202Visible && <Allowpayment205 />}
+                {isHouse205Visible && <Allowpayment205 />}
             </div>
             <div className='allow-payment-section'>
-                <button onClick={toggleHouse202Info}>
-                    {isHouse202Visible ? 'ซ่อน 206 ขออนุญาตชำระ' : '206 ขออนุญาตชำระ'}
+                <button onClick={toggleHouse206Info}>
+                    {isHouse206Visible ? 'ซ่อน 206 ขออนุญาตชำระ' : '206 ขออนุญาตชำระ'}
                 </button>
-                {isHouse202Visible && <Allowpayment206 />}
+                {isHouse206Visible && <Allowpayment206 />}
             </div>
         </div>
     );

@@ -10,6 +10,9 @@ import HouseInfo206 from './HouseInfo206';
 const AdminPage: React.FC = () => {
     const [isHouseInfo201Visible, setHouseInfo201Visible] = useState(false);
     const [isHouseInfo202Visible, setHouseInfo202Visible] = useState(false);
+    const [isHouseInfo204Visible, setHouseInfo204Visible] = useState(false);
+    const [isHouseInfo205Visible, setHouseInfo205Visible] = useState(false);
+    const [isHouseInfo206Visible, setHouseInfo206Visible] = useState(false);
 
     const toggleHouseInfo201 = () => {
         setHouseInfo201Visible(prevState => !prevState);
@@ -17,6 +20,18 @@ const AdminPage: React.FC = () => {
 
     const toggleHouseInfo202 = () => {
         setHouseInfo202Visible(prevState => !prevState);
+    };
+
+    const toggleHouseInfo204 = () => {
+        setHouseInfo204Visible(prevState => !prevState);
+    };
+
+    const toggleHouseInfo205 = () => {
+        setHouseInfo205Visible(prevState => !prevState);
+    };
+
+    const toggleHouseInfo206 = () => {
+        setHouseInfo206Visible(prevState => !prevState);
     };
 
     return (
@@ -34,20 +49,20 @@ const AdminPage: React.FC = () => {
             </button>
             {isHouseInfo202Visible && <HouseInfo202 />}
             <pre></pre>
-            <button onClick={toggleHouseInfo202}>
-                {isHouseInfo202Visible ? 'ปิดข้อมูล 204' : 'เปิดข้อมูล 204'}
+            <button onClick={toggleHouseInfo204}>
+                {isHouseInfo204Visible ? 'ปิดข้อมูล 204' : 'เปิดข้อมูล 204'}
             </button>
-            {isHouseInfo202Visible && <HouseInfo204 />}
+            {isHouseInfo204Visible && <HouseInfo204 />}
             <pre></pre>
-            <button onClick={toggleHouseInfo202}>
-                {isHouseInfo202Visible ? 'ปิดข้อมูล 205' : 'เปิดข้อมูล 205'}
+            <button onClick={toggleHouseInfo205}>
+                {isHouseInfo205Visible ? 'ปิดข้อมูล 205' : 'เปิดข้อมูล 205'}
             </button>
-            {isHouseInfo202Visible && <HouseInfo205 />}
+            {isHouseInfo205Visible && <HouseInfo205 />}
             <pre></pre>
-            <button onClick={toggleHouseInfo202}>
-                {isHouseInfo202Visible ? 'ปิดข้อมูล 206' : 'เปิดข้อมูล 206'}
+            <button onClick={toggleHouseInfo206}>
+                {isHouseInfo206Visible ? 'ปิดข้อมูล 206' : 'เปิดข้อมูล 206'}
             </button>
-            {isHouseInfo202Visible && <HouseInfo206 />}
+            {isHouseInfo206Visible && <HouseInfo206 />}
             <pre></pre>
         </div>
     );
