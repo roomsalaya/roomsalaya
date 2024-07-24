@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { Table, Card, Space, Button, message } from 'antd';
 import { ExclamationCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import AppMenu202 from './AppMenu202'; // Adjust component name if needed
@@ -7,12 +6,17 @@ import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import './Allowpayment201.css';  // Import your CSS file
 
-const Allowpayment202: React.FC = () => {
-    const location = useLocation();
-    const state = location.state as { selectedText?: string, selectedImage?: string } | undefined;
+// Define the interface for payment proof data
+interface PaymentProof {
+    key: string;
+    item: string;
+    detail: React.ReactNode;
+    status: string;
+}
 
+const Allowpayment202: React.FC = () => {
     // State for holding data
-    const [data, setData] = useState<{ key: string, item: string, detail: React.ReactNode, status: string }[]>([]);
+    const [data, setData] = useState<PaymentProof[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     // Fetch data from Firestore
@@ -20,7 +24,7 @@ const Allowpayment202: React.FC = () => {
         setLoading(true);
         try {
             const querySnapshot = await getDocs(collection(db, "paymentProofs202")); // Adjust collection name
-            const fetchedData = querySnapshot.docs.map((doc) => {
+            const fetchedData: PaymentProof[] = querySnapshot.docs.map((doc) => {
                 const data = doc.data();
                 return {
                     key: doc.id,
@@ -77,7 +81,7 @@ const Allowpayment202: React.FC = () => {
         {
             title: 'การดำเนินการ',
             key: 'action',
-            render: (_: any, record: { key: string, status: string }) => (
+            render: (_: any, record: PaymentProof) => (
                 <Button
                     type="default"
                     icon={record.status === 'pending' ? <CheckCircleOutlined /> : <ExclamationCircleOutlined />}
@@ -96,7 +100,7 @@ const Allowpayment202: React.FC = () => {
     return (
         <div className='payment-history-container'>
             <h3>ประวัติแจ้งชำระค่าเช่า
-                <AppMenu202 /> {/* Adjust component name as needed */}
+                <AppMenu202 /> {/* Ensure this component is correctly named and imported */}
             </h3>
             <Space direction="vertical" size="middle" style={{ width: '100%' }}>
                 <Card title="รายละเอียดการชำระเงิน">

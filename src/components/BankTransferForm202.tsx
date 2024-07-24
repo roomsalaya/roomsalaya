@@ -8,14 +8,16 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage, auth } from '../firebaseConfig';
 import './BankTransferForm201.css'; // Updated CSS
 
+// Function to copy text to clipboard
 const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
         message.success('Copied to clipboard');
-    }).catch(err => {
+    }).catch(() => {
         message.error('Failed to copy');
     });
 };
 
+// Define the interface for invoice data
 interface Invoice {
     id?: string;
     month: string;
@@ -29,6 +31,7 @@ interface Invoice {
     createdAt?: { seconds: number }; // Timestamp field
 }
 
+// Dropdown menu for selecting an invoice
 const DropdownMenu: React.FC<{ invoices: Invoice[], onSelect: (text: string) => void }> = ({ invoices, onSelect }) => (
     <Menu onClick={({ key }) => onSelect(key)}>
         {invoices.map((invoice) => (
@@ -46,29 +49,32 @@ const BankTransferForm202: React.FC = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
 
+    // Fetch invoices from Firestore on component mount
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const querySnapshot = await getDocs(collection(db, "invoices202")); // Adjust collection name for Room 202
-                const invoicesData: Invoice[] = [];
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data() as Invoice;
-                    invoicesData.push({ id: doc.id, ...data });
-                });
+                const invoicesData: Invoice[] = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data() as Invoice
+                }));
                 invoicesData.sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
                 setInvoices(invoicesData);
-            } catch (e) {
-                console.error("Error fetching invoices: ", e);
+            } catch (error) {
+                console.error("Error fetching invoices: ", error);
+                message.error('Error fetching invoices');
             }
         };
 
         fetchData();
     }, []);
 
+    // Handle invoice selection from dropdown
     const handleMenuSelect = (text: string) => {
         setSelectedText(text);
     };
 
+    // Handle file selection
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
@@ -78,15 +84,18 @@ const BankTransferForm202: React.FC = () => {
         }
     };
 
+    // Remove selected image
     const handleRemoveImage = () => {
         setSelectedImage(null);
         message.info('Image removed');
     };
 
+    // Trigger file input click
     const handleAttachImageClick = () => {
         fileInputRef.current?.click(); // Trigger file input click
     };
 
+    // Handle submitting proof of payment
     const handleSubmitProof = async () => {
         if (!selectedImage || selectedText === 'Select invoice to pay') {
             message.error('Please select a payment proof and invoice to pay');
@@ -122,6 +131,7 @@ const BankTransferForm202: React.FC = () => {
         }
     };
 
+    // Handle navigation to payment history
     const handleViewHistory = () => {
         navigate('/paymenthistory202'); // Navigate to PaymentHistory202 page
     };
@@ -139,7 +149,7 @@ const BankTransferForm202: React.FC = () => {
                         &nbsp; ธนาคารไทยพาณิชย์
                     </p>
                     <p className='scb'>
-                        ชื่อบัญชี : ธนกร แดนประเทืองg
+                        ชื่อบัญชี : ธนกร แดนประเทือง
                     </p>
                     <p className='bum'>
                         เลขบัญชี : 403-992701-1
@@ -147,7 +157,7 @@ const BankTransferForm202: React.FC = () => {
                             <Button
                                 shape="circle"
                                 icon={<CopyOutlined />}
-                                onClick={() => copyToClipboard('4039927011')}
+                                onClick={() => copyToClipboard('403-992701-1')}
                                 className='copy-button'
                             />
                         </Tooltip>

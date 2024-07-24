@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebaseConfig'; // Adjust the path as needed
 import './Room201.css'; // Import the CSS file
@@ -18,7 +18,7 @@ interface Invoice {
     createdAt?: { seconds: number }; // Add createdAt to handle timestamp
 }
 
-const Room201 = () => {
+const Room201: React.FC = () => {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
 
     useEffect(() => {

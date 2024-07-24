@@ -31,37 +31,31 @@ const AppMenu201: React.FC = () => {
         navigate('/');
     };
 
-    const menuItems = [
-        {
-            key: '1',
-            icon: <AppstoreOutlined />,
-            label: <Link to="/room201">รายการค้างชำระ</Link>,
-        },
-        {
-            key: '2',
-            icon: <NotificationOutlined />,
-            label: <Link to="/bank201">แจ้งชำระค่าเช่า</Link>,
-        },
-        {
-            key: '3',
-            icon: <UserOutlined />,
-            label: <Link to="/userpage201">บัญชี</Link>,
-        },
-        {
-            key: '4',
-            icon: <LogoutOutlined style={{ color: 'red' }} />,
-            label: 'ออกจากระบบ',
-        },
-    ];
+    const menuItems = (
+        <Menu onClick={handleMenuClick}>
+            <Menu.Item key="1" icon={<AppstoreOutlined />}>
+                <Link to="/room201">รายการค้างชำระ</Link>
+            </Menu.Item>
+            <Menu.Item key="2" icon={<NotificationOutlined />}>
+                <Link to="/bank201">แจ้งชำระค่าเช่า</Link>
+            </Menu.Item>
+            <Menu.Item key="3" icon={<UserOutlined />}>
+                <Link to="/userpage201">บัญชี</Link>
+            </Menu.Item>
+            <Menu.Item key="4" icon={<LogoutOutlined style={{ color: 'red' }} />}>
+                ออกจากระบบ
+            </Menu.Item>
+        </Menu>
+    );
 
     return (
         <div className='menu-container'>
             <Dropdown
-                menu={{ items: menuItems, onClick: handleMenuClick }}
+                overlay={menuItems}
                 trigger={['click']}
-                getPopupContainer={() => document.body} // ตั้งค่าให้เมนูดรอปดาวน์ถูกเพิ่มใน body
-                onOpenChange={handleOpenChange}
-                open={open}
+                getPopupContainer={() => document.body}
+                onVisibleChange={handleOpenChange}
+                visible={open}
             >
                 <Button>
                     เมนู <DownOutlined />

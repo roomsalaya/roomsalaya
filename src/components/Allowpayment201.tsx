@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { Table, Card, Space, Button, message } from 'antd';
-import { ExclamationCircleOutlined, CheckCircleOutlined } from '@ant-design/icons'; // Ensure these icons are imported
+import { ExclamationCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import AppMenu201 from './AppMenu201';
 import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import './Allowpayment201.css';  // Import your CSS file
 
-const Allowpayment201: React.FC = () => {
-    const location = useLocation();
-    const state = location.state as { selectedText?: string, selectedImage?: string } | undefined;
+// Define the interface for payment proof data
+interface PaymentProof {
+    key: string;
+    item: string;
+    detail: React.ReactNode;
+    status: string;
+}
 
+const Allowpayment201: React.FC = () => {
     // State for holding data
-    const [data, setData] = useState<{ key: string, item: string, detail: React.ReactNode, status: string }[]>([]);
+    const [data, setData] = useState<PaymentProof[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     // Fetch data from Firestore
@@ -20,7 +24,7 @@ const Allowpayment201: React.FC = () => {
         setLoading(true);
         try {
             const querySnapshot = await getDocs(collection(db, "paymentProofs"));
-            const fetchedData = querySnapshot.docs.map((doc) => {
+            const fetchedData: PaymentProof[] = querySnapshot.docs.map((doc) => {
                 const data = doc.data();
                 return {
                     key: doc.id,
@@ -55,7 +59,7 @@ const Allowpayment201: React.FC = () => {
     const handleStatusChange = async (key: string, currentStatus: string) => {
         const newStatus = currentStatus === 'pending' ? 'approved' : 'pending';
         const docRef = doc(db, "paymentProofs", key);
-        
+
         try {
             await updateDoc(docRef, { status: newStatus });
             setData(prevData =>
@@ -77,7 +81,7 @@ const Allowpayment201: React.FC = () => {
         {
             title: 'การดำเนินการ',
             key: 'action',
-            render: (_: any, record: { key: string, status: string }) => (
+            render: (_: any, record: PaymentProof) => (
                 <Button
                     type="default"
                     icon={record.status === 'pending' ? <CheckCircleOutlined /> : <ExclamationCircleOutlined />}

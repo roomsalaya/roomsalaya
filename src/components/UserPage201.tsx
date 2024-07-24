@@ -1,11 +1,8 @@
 import React from 'react';
 import AppMenu201 from './AppMenu201';
-import './UserPage201.css'; // นำเข้าไฟล์ CSS
-import { useNavigate } from 'react-router-dom'; // นำเข้า useNavigate
+import './UserPage201.css'; // Import CSS file
 
 const UserPage201: React.FC = () => {
-    const navigate = useNavigate(); // สร้าง navigate
-
     return (
         <div className='User-container'>
             <h3>ห้อง 201</h3>

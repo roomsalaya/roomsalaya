@@ -8,16 +8,16 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage, auth } from '../firebaseConfig';
 import './BankTransferForm201.css';
 
-// ฟังก์ชันคัดลอกข้อมูลไปยังคลิปบอร์ด
+// Function to copy text to clipboard
 const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
-        message.success('คัดลอกไปยังคลิปบอร์ดแล้ว');
-    }).catch(err => {
-        message.error('ไม่สามารถคัดลอกได้');
+        message.success('Copied to clipboard');
+    }).catch(() => {
+        message.error('Failed to copy');
     });
 };
 
-// ประเภทข้อมูลของใบแจ้งหนี้
+// Interface for invoice data
 interface Invoice {
     id?: string;
     month: string;
@@ -27,16 +27,16 @@ interface Invoice {
     electricity: string;
     water: string;
     total: string;
-    status: boolean; // true สำหรับ Paid, false สำหรับ Unpaid
-    createdAt?: { seconds: number }; // ฟิลด์ Timestamp จาก Firestore
+    status: boolean; // true for Paid, false for Unpaid
+    createdAt?: { seconds: number }; // Timestamp field from Firestore
 }
 
-// ฟังก์ชันที่ใช้สำหรับแสดงเมนูใน Dropdown
+// Dropdown menu for selecting invoices
 const DropdownMenu: React.FC<{ invoices: Invoice[], onSelect: (text: string) => void }> = ({ invoices, onSelect }) => (
     <Menu onClick={({ key }) => onSelect(key)}>
         {invoices.map((invoice) => (
-            <Menu.Item key={`${invoice.month}: ${invoice.total} บาท`}>
-                {invoice.month}: {invoice.total} บาท - {invoice.status ? 'ชำระแล้ว' : 'รอชำระ'}
+            <Menu.Item key={`${invoice.month}: ${invoice.total} Baht`}>
+                {invoice.month}: {invoice.total} Baht - {invoice.status ? 'Paid' : 'Pending'}
             </Menu.Item>
         ))}
     </Menu>
@@ -44,7 +44,7 @@ const DropdownMenu: React.FC<{ invoices: Invoice[], onSelect: (text: string) => 
 
 const BankTransferForm201: React.FC = () => {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
-    const [selectedText, setSelectedText] = useState<string>('เลือกรายการที่ต้องการชำระ');
+    const [selectedText, setSelectedText] = useState<string>('Select payment item');
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
@@ -77,43 +77,39 @@ const BankTransferForm201: React.FC = () => {
         if (file) {
             const imageUrl = URL.createObjectURL(file);
             setSelectedImage(imageUrl);
-            message.success(`ไฟล์ "${file.name}" ถูกเลือก`);
+            message.success(`File "${file.name}" selected`);
         }
     };
 
     const handleRemoveImage = () => {
         setSelectedImage(null);
-        message.info('ภาพถูกลบ');
+        message.info('Image removed');
     };
 
     const handleAttachImageClick = () => {
-        fileInputRef.current?.click(); // Trigger the file input click
+        fileInputRef.current?.click();
     };
 
     const handleSubmitProof = async () => {
-        if (!selectedImage || selectedText === 'เลือกรายการที่ต้องการชำระ') {
-            message.error('กรุณาเลือกหลักฐานการชำระเงินและรายการที่ต้องการชำระ');
+        if (!selectedImage || selectedText === 'Select payment item') {
+            message.error('Please select proof of payment and payment item');
             return;
         }
 
         try {
-            // ตรวจสอบการรับรองความถูกต้องของผู้ใช้
             const user = auth.currentUser;
             if (!user) {
-                message.error('ต้องเข้าสู่ระบบก่อน');
+                message.error('You need to be logged in');
                 return;
             }
 
-            // อัปโหลดภาพไปยัง Firebase Storage
             const imageRef = ref(storage, `proofs/${Date.now()}_${Math.random()}`);
             const response = await fetch(selectedImage);
             const blob = await response.blob();
             await uploadBytes(imageRef, blob);
 
-            // รับ URL การดาวน์โหลดของภาพที่อัปโหลด
             const downloadURL = await getDownloadURL(imageRef);
 
-            // บันทึกข้อมูลลงใน Firestore
             await addDoc(collection(db, "paymentProofs"), {
                 invoice: selectedText,
                 imageUrl: downloadURL,
@@ -121,36 +117,36 @@ const BankTransferForm201: React.FC = () => {
                 timestamp: new Date()
             });
 
-            message.success('หลักฐานการชำระเงินถูกส่งเรียบร้อยแล้ว');
+            message.success('Proof of payment submitted successfully');
             navigate('/paymenthistory201', { state: { selectedText, selectedImage: downloadURL } });
         } catch (error) {
             console.error('Error submitting proof: ', error);
-            message.error('เกิดข้อผิดพลาดในการส่งหลักฐานการชำระเงิน');
+            message.error('Error submitting proof of payment');
         }
     };
 
     const handleViewHistory = () => {
-        navigate('/paymenthistory201'); // Navigate to PaymentHistory201 page
+        navigate('/paymenthistory201');
     };
 
     return (
         <div className='bank-container'>
             <h3>
-                แจ้งชำระค่าเช่า 201
+                Report Rent Payment 201
                 <AppMenu201 />
             </h3>
             <Space className='space' direction="vertical" size="middle">
-                <Card className='card' title="ธนาคารสำหรับโอนค่าเช่าหอพัก">
+                <Card className='card' title="Bank for Rent Payment">
                     <p className='scb'>
                         <img src="https://i.ibb.co/7yzngyM/scb-bank-logo.png" alt="Bank Logo" className='logo-image' />
-                        &nbsp; ธนาคารไทยพาณิชย์
+                        &nbsp; Siam Commercial Bank
                     </p>
                     <p className='scb'>
-                        ชื่อบัญชี : ธนกร แดนประเทือง
+                        Account Name: Thanakorn Danprateung
                     </p>
                     <p className='bum'>
-                        เลขบัญชี : 403-992701-1
-                        &nbsp;<Tooltip title="คัดลอกเลขบัญชี">
+                        Account Number: 403-992701-1
+                        &nbsp;<Tooltip title="Copy account number">
                             <Button
                                 shape="circle"
                                 icon={<CopyOutlined />}
@@ -166,9 +162,9 @@ const BankTransferForm201: React.FC = () => {
                     className='history-button'
                     aria-label="View payment history"
                 >
-                    ประวัติแจ้งชำระ
+                    Payment History
                 </Button>
-                <Card className='card' title="ยอดที่ต้องชำระ">
+                <Card className='card' title="Amount to Pay">
                     <Dropdown overlay={<DropdownMenu invoices={invoices} onSelect={handleMenuSelect} />} trigger={['click']} placement="bottomRight">
                         <Button className='dropdown-button'>
                             {selectedText} <DownOutlined />
@@ -183,7 +179,7 @@ const BankTransferForm201: React.FC = () => {
                         className='file-input'
                         aria-label="Select an image file to upload"
                         ref={fileInputRef}
-                        style={{ display: 'none' }} // Hide the file input
+                        style={{ display: 'none' }}
                     />
                     <Button
                         icon={<UploadOutlined />}
@@ -191,7 +187,7 @@ const BankTransferForm201: React.FC = () => {
                         className='upload-button'
                         aria-label="Attach an image"
                     >
-                        แนบรูปภาพ
+                        Attach Image
                     </Button>
                     <pre />
                     {selectedImage && (
@@ -203,7 +199,7 @@ const BankTransferForm201: React.FC = () => {
                                 className='remove-image-button'
                                 aria-label="Remove attached image"
                             >
-                                ลบภาพ
+                                Remove Image
                             </Button>
                         </div>
                     )}
@@ -213,7 +209,7 @@ const BankTransferForm201: React.FC = () => {
                         className='submit-button'
                         aria-label="Submit proof of payment"
                     >
-                        กดส่งแจ้งหลักฐานการชำระ
+                        Submit Proof of Payment
                     </Button>
                 </Card>
             </Space>

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebaseConfig'; // Adjust the path as needed
-import './Room201.css'; // Import the CSS file for Room202
-import AppMenu202 from './AppMenu202'; // Adjust the component if needed
+import './Room201.css'; // Make sure the CSS file is correctly named for Room202
+import AppMenu202 from './AppMenu202'; // Adjust the component path if needed
 import { CheckCircleOutlined, ClockCircleOutlined } from '@ant-design/icons';
 
+// Define the Invoice interface
 interface Invoice {
-    id?: string; // Add id to the interface
+    id?: string;
     month: string;
     name: string;
     room: string;
@@ -15,28 +16,27 @@ interface Invoice {
     water: string;
     total: string;
     status: boolean; // true for Paid, false for Unpaid
-    createdAt?: { seconds: number }; // Add createdAt to handle timestamp
+    createdAt?: { seconds: number }; // Optional timestamp
 }
 
-const Room202 = () => {
+const Room202: React.FC = () => {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
+    const [error, setError] = useState<string | null>(null); // State for error handling
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Change the collection name to "invoices202" for Room202
-                const querySnapshot = await getDocs(collection(db, "invoices202"));
+                const querySnapshot = await getDocs(collection(db, "invoices202")); // Collection for Room202
                 const invoicesData: Invoice[] = [];
                 querySnapshot.forEach((doc) => {
                     const data = doc.data() as Invoice;
-                    // Add document ID and timestamp to the invoice data
                     invoicesData.push({ id: doc.id, ...data });
                 });
-                // Sort invoices by createdAt in ascending order (newest at the bottom)
                 invoicesData.sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
                 setInvoices(invoicesData);
             } catch (e) {
                 console.error("Error fetching invoices: ", e);
+                setError('Error fetching invoices. Please try again later.'); // Set error message
             }
         };
 
@@ -47,8 +47,9 @@ const Room202 = () => {
         <div className='room-info-container'>
             <h3>ประวัติชำระหนี้ ห้อง 202</h3>
             <div className='menu-container'>
-                <AppMenu202 /> {/* Adjust this component if needed */}
+                <AppMenu202 /> {/* Ensure this component is correctly imported */}
             </div>
+            {error && <p className='error-message'>{error}</p>} {/* Display error message if any */}
             <table>
                 <thead>
                     <tr>
@@ -63,33 +64,39 @@ const Room202 = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {invoices.map((invoice) => (
-                        <tr key={invoice.id}>
-                            <td>{invoice.month}</td>
-                            <td>{invoice.name}</td>
-                            <td>{invoice.room}</td>
-                            <td>{invoice.rent}</td>
-                            <td>{invoice.electricity}</td>
-                            <td>{invoice.water}</td>
-                            <td>{invoice.total}</td>
-                            <td>
-                                <button
-                                    className={`status-button ${invoice.status ? 'status-paid' : 'status-unpaid'}`}
-                                    disabled
-                                >
-                                    {invoice.status ? (
-                                        <>
-                                            <CheckCircleOutlined /> ชำระแล้ว
-                                        </>
-                                    ) : (
-                                        <>
-                                            <ClockCircleOutlined /> รออนุมัติชำระ
-                                        </>
-                                    )}
-                                </button>
-                            </td>
+                    {invoices.length > 0 ? (
+                        invoices.map((invoice) => (
+                            <tr key={invoice.id}>
+                                <td>{invoice.month}</td>
+                                <td>{invoice.name}</td>
+                                <td>{invoice.room}</td>
+                                <td>{invoice.rent}</td>
+                                <td>{invoice.electricity}</td>
+                                <td>{invoice.water}</td>
+                                <td>{invoice.total}</td>
+                                <td>
+                                    <button
+                                        className={`status-button ${invoice.status ? 'status-paid' : 'status-unpaid'}`}
+                                        disabled
+                                    >
+                                        {invoice.status ? (
+                                            <>
+                                                <CheckCircleOutlined /> ชำระแล้ว
+                                            </>
+                                        ) : (
+                                            <>
+                                                <ClockCircleOutlined /> รออนุมัติชำระ
+                                            </>
+                                        )}
+                                    </button>
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan={8}>ไม่มีข้อมูล</td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
             </table>
         </div>
