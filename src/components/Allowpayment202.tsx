@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Card, Space, Button, message } from 'antd';
 import { ExclamationCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
-import AppMenu202 from './AppMenu202'; // Adjust component name if needed
 import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import './Allowpayment201.css';  // Import your CSS file
@@ -100,7 +99,6 @@ const Allowpayment202: React.FC = () => {
     return (
         <div className='payment-history-container'>
             <h3>ประวัติแจ้งชำระค่าเช่า
-                <AppMenu202 /> {/* Ensure this component is correctly named and imported */}
             </h3>
             <Space direction="vertical" size="middle" style={{ width: '100%' }}>
                 <Card title="รายละเอียดการชำระเงิน">
