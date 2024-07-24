@@ -13,7 +13,7 @@ interface PaymentProof {
     status: string;
 }
 
-const Allowpayment201: React.FC = () => {
+const Allowpayment204: React.FC = () => {
     // State for holding data
     const [data, setData] = useState<PaymentProof[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -22,7 +22,7 @@ const Allowpayment201: React.FC = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const querySnapshot = await getDocs(collection(db, "paymentProofs"));
+            const querySnapshot = await getDocs(collection(db, "paymentProofs204")); // Adjust collection name
             const fetchedData: PaymentProof[] = querySnapshot.docs.map((doc) => {
                 const data = doc.data();
                 return {
@@ -57,8 +57,8 @@ const Allowpayment201: React.FC = () => {
     // Function to update status in Firestore
     const handleStatusChange = async (key: string, currentStatus: string) => {
         const newStatus = currentStatus === 'pending' ? 'approved' : 'pending';
-        const docRef = doc(db, "paymentProofs", key);
-
+        const docRef = doc(db, "paymentProofs204", key); // Adjust collection name
+        
         try {
             await updateDoc(docRef, { status: newStatus });
             setData(prevData =>
@@ -114,4 +114,4 @@ const Allowpayment201: React.FC = () => {
     );
 };
 
-export default Allowpayment201;
+export default Allowpayment204;

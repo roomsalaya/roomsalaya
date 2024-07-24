@@ -2,6 +2,7 @@ import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebaseConfig';
+import HouseInfo204 from './components/HouseInfo204';
 
 // Lazy load components
 const AdminPage = lazy(() => import('./components/AdminPage'));
@@ -47,6 +48,7 @@ const App: React.FC = () => {
                     <Route path='/UserPage202' element={<UserPage202 />} />
                     <Route path="/houseinfo201" element={user ? <HouseInfo201 /> : <Navigate to="/login" />} />
                     <Route path="/houseinfo202" element={user ? <HouseInfo202 /> : <Navigate to="/login" />} />
+                    <Route path="/houseinfo204" element={user ? <HouseInfo204 /> : <Navigate to="/login" />} />
                     <Route path="/room201" element={user ? <Room201 /> : <Navigate to="/login" />} />
                     <Route path="/room202" element={user ? <Room202 /> : <Navigate to="/login" />} />
                     <Route path="/" element={<Home />} />
