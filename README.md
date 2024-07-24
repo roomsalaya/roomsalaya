@@ -32,3 +32,5 @@ export default {
 git add .
 git commit -m “First time to commit”
 git push
+
+npm run deploy

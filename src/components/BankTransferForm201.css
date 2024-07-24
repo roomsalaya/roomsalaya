@@ -9,6 +9,10 @@
     font-family: "Kanit", sans-serif;
 }
 
+.bank-container .AppMenu201{
+    left: 120px;
+}
+
 .bank-container .Space{
     width: 100%;
 }
@@ -16,7 +20,7 @@
 .bank-container .card{
     font-family: "Kanit", sans-serif;
     font-size: 16px;
-    width: 350px;
+    width: 310px;
 }
 
 .bank-container .scb {
@@ -119,7 +123,7 @@
     font-size: 16px; /* ขนาดตัวอักษร */
     cursor: pointer; /* ลูกศรชี้เมื่อวางเมาส์ */
     transition: background-color 0.3s ease; /* การเปลี่ยนสีพื้นหลังแบบนุ่มนวล */
-    left: 170px;
+    left: 120px;
     border: 1px solid rgb(255, 166, 0);
     font-weight: 500;
 }

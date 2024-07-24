@@ -1,7 +1,8 @@
 .menu-container {
     display: flex;
-    justify-content: center;
+    justify-content: right;
     align-items: center;
+    transform: translateY(-30px);
 }
 
 .menu-container button {

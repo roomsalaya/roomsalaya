@@ -3,48 +3,61 @@
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transform: translateY(-30px);
-    overflow: auto;
+    overflow-y: auto;
 }
 
 .room-info-container h3 {
-    font-weight: normal;
-    padding-bottom: 30px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #333;
 }
 
-.room-info-container table {
+.menu-container {
+    margin-bottom: 20px;
+}
+
+table {
+    transform: translateY(-20px);
     width: 100%;
     border-collapse: collapse;
+    margin-top: 10px;
 }
 
-.room-info-container th, td {
+table th, table td {
     border: 1px solid #ddd;
-    width: 0 auto;
+    padding: 10px;
     text-align: center;
 }
 
-.room-info-container .status-button {
+table th {
+    color: #333;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.status-button {
     border: none;
-    padding: 8px 16px;
-    color: #fff;
-    font-weight: 400;
-    cursor: pointer;
-    border-radius: 15px;
-    font-family: "Kanit", sans-serif;
-}
-
-.room-info-container .status-paid {
-    background-color: green;
-}
-
-.room-info-container .status-unpaid {
-    background-color: red;
-}
-
-.room-info-container .menu-container {
-    display: grid;
-    justify-content: right;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: not-allowed;
+    border-radius: 4px;
+    display: flex;
     align-items: center;
-    transform: translateY(-40px);
-    font-family: "Kanit", sans-serif;
+    justify-content: center;
+}
+
+.status-paid {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+.status-unpaid {
+    background-color: #ff9800;
+    color: #fff;
+}
+
+.status-button svg {
+    margin-right: 5px;
 }

@@ -3,7 +3,6 @@
     padding: 20px;
     background-color: #f9f9f9;
     font-family: "Kanit", sans-serif;
-    text-align: center;
 }
 
 /* Styling for the card title */
@@ -12,7 +11,6 @@
     font-size: 24px;
     color: #333;
     font-family: "Kanit", sans-serif;
-    text-align: center;
 }
 
 /* Card styling */

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebaseConfig'; // Adjust the path as needed
-import './Room201.css'; // Import the CSS file
+import './Room201.css';
 import AppMenu201 from './AppMenu201';
 import { CheckCircleOutlined, ClockCircleOutlined } from '@ant-design/icons';
 
@@ -44,9 +44,11 @@ const Room201: React.FC = () => {
 
     return (
         <div className='room-info-container'>
-            <h3>ประวัติชำระหนี้ ห้อง 201</h3>
+            <h3>ประวัติชำระหนี้ ห้อง 201
+            <AppMenu201 />
+
+            </h3>
             <div className='menu-container'>
-                <AppMenu201 />
             </div>
             <table>
                 <thead>
