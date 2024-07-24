@@ -37,7 +37,7 @@ const App: React.FC = () => {
     }, []);
 
     return (
-        <BrowserRouter>
+        <BrowserRouter basename="/roomsalaya">
             <Suspense fallback={<div>Loading...</div>}>
                 <Routes>
                     <Route path="/loginuser" element={<LoginUser />} />
@@ -46,7 +46,7 @@ const App: React.FC = () => {
                     <Route path='/UserPage201' element={<UserPage201 />} />
                     <Route path='/UserPage202' element={<UserPage202 />} />
                     <Route path="/houseinfo201" element={user ? <HouseInfo201 /> : <Navigate to="/login" />} />
-                    <Route path="/houseinfo202" element={<HouseInfo202 />} />
+                    <Route path="/houseinfo202" element={user ? <HouseInfo202 /> : <Navigate to="/login" />} />
                     <Route path="/room201" element={user ? <Room201 /> : <Navigate to="/login" />} />
                     <Route path="/room202" element={user ? <Room202 /> : <Navigate to="/login" />} />
                     <Route path="/" element={<Home />} />
@@ -57,6 +57,7 @@ const App: React.FC = () => {
                     <Route path='/allowpayment201' element={<Allowpayment201 />} />
                     <Route path='/allowpayment202' element={<Allowpayment202 />} />
                     <Route path='/allowpayment' element={<Allowpayment />} />
+                    <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
             </Suspense>
         </BrowserRouter>
