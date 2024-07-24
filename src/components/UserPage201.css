@@ -1,0 +1,42 @@
+.User-container {
+    max-width: 400px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    background-color: #f9f9f9;
+    box-shadow: 5px 1px 10px #ccc;
+    font-family: "Kanit", sans-serif;
+}
+
+.User-container .menu-container {
+    margin: 0 auto;
+    padding-left: 120px;
+    transform: translateY(-25px);
+    font-family: "Kanit", sans-serif;
+}
+
+.User-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    transform: translateY(-30%);
+}
+
+.User-container th, .td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.User-container th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.User-container tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.User-container tbody tr:hover {
+    background-color: #f1f1f1;
+}

@@ -13,9 +13,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/antd": "^1.0.0",
+    "antd": "^5.19.3",
+    "firebase": "^10.12.4",
     "gh-pages": "^6.1.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.25.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
