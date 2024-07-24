@@ -21,8 +21,8 @@ const UserPage315: React.FC = () => {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>นางสาวณัฐนรี มุทิตสกุล</td>
-                        <td>3,200</td>
+                        <td>นายนวพล คำฮี้</td>
+                        <td>2,500</td>
                         <td>1 ก.ค. 67 ถึง 31 ธ.ค. 67</td>
                     </tr>
                 </tbody>

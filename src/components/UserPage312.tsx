@@ -21,9 +21,9 @@ const UserPage312: React.FC = () => {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>นางสาวณัฐนรี มุทิตสกุล</td>
+                        <td>ไม่มี</td>
                         <td>3,200</td>
-                        <td>1 ก.ค. 67 ถึง 31 ธ.ค. 67</td>
+                        <td>ไม่มี</td>
                     </tr>
                 </tbody>
             </table>
