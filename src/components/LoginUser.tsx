@@ -16,11 +16,11 @@ const LoginUser: React.FC = () => {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const userEmail = userCredential.user.email;
 
-            if (userEmail === '201@salaya.com') {
+            if (userEmail === '201@room.com') {
                 navigate('/UserPage201'); // Navigate to UserPage
-            } else if (userEmail === '202@salaya.com') {
+            } else if (userEmail === '202@room.com') {
                 navigate('/UserPage202');
-            } else if (userEmail === '204@salaya.com') {
+            } else if (userEmail === '204@room.com') {
                 navigate('/userpage204');
             } else {
                 setError('Unauthorized access.');
