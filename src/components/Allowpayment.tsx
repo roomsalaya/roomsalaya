@@ -3,6 +3,9 @@ import './Allowpayment.css';
 import AppMenuAdmin from './AppMenuAdmin';
 import Allowpayment201 from './Allowpayment201';
 import Allowpayment202 from './Allowpayment202';
+import Allowpayment204 from './Allowpayment204';
+import Allowpayment206 from './Allowpayment206';
+import Allowpayment205 from './Allowpayment205';
 
 const Allowpayment: React.FC = () => {
     const [isHouse201Visible, setHouse201Visible] = useState(false);
@@ -30,6 +33,24 @@ const Allowpayment: React.FC = () => {
                     {isHouse202Visible ? 'ซ่อน 202 ขออนุญาตชำระ' : '202 ขออนุญาตชำระ'}
                 </button>
                 {isHouse202Visible && <Allowpayment202 />}
+            </div>
+            <div className='allow-payment-section'>
+                <button onClick={toggleHouse202Info}>
+                    {isHouse202Visible ? 'ซ่อน 204 ขออนุญาตชำระ' : '204 ขออนุญาตชำระ'}
+                </button>
+                {isHouse202Visible && <Allowpayment204 />}
+            </div>
+            <div className='allow-payment-section'>
+                <button onClick={toggleHouse202Info}>
+                    {isHouse202Visible ? 'ซ่อน 205 ขออนุญาตชำระ' : '205 ขออนุญาตชำระ'}
+                </button>
+                {isHouse202Visible && <Allowpayment205 />}
+            </div>
+            <div className='allow-payment-section'>
+                <button onClick={toggleHouse202Info}>
+                    {isHouse202Visible ? 'ซ่อน 206 ขออนุญาตชำระ' : '206 ขออนุญาตชำระ'}
+                </button>
+                {isHouse202Visible && <Allowpayment206 />}
             </div>
         </div>
     );
