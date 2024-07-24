@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebaseConfig'; // Adjust the path as needed
 import './Room201.css';
-import AppMenu201 from './AppMenu201';
+import AppMenu205 from './AppMenu205'; // Adjust the component path if needed
 import { CheckCircleOutlined, ClockCircleOutlined } from '@ant-design/icons';
 
+// Define the Invoice interface
 interface Invoice {
-    id?: string; // Add id to the interface
+    id?: string;
     month: string;
     name: string;
     room: string;
@@ -15,16 +16,16 @@ interface Invoice {
     water: string;
     total: string;
     status: boolean; // true for Paid, false for Unpaid
-    createdAt?: { seconds: number }; // Add createdAt to handle timestamp
+    createdAt?: { seconds: number }; // Optional timestamp
 }
 
-const Room201: React.FC = () => {
+const Room205: React.FC = () => {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const querySnapshot = await getDocs(collection(db, "invoices"));
+                const querySnapshot = await getDocs(collection(db, "invoices205"));
                 const invoicesData: Invoice[] = [];
                 querySnapshot.forEach((doc) => {
                     const data = doc.data() as Invoice;
@@ -44,8 +45,8 @@ const Room201: React.FC = () => {
 
     return (
         <div className='room-info-container'>
-            <h3>ประวัติชำระหนี้ ห้อง 201
-            <AppMenu201 />
+            <h3>ประวัติชำระหนี้ ห้อง 205
+                <AppMenu205 />
             </h3>
             <div className='menu-container'>
             </div>
@@ -96,4 +97,4 @@ const Room201: React.FC = () => {
     );
 };
 
-export default Room201;
+export default Room205;
