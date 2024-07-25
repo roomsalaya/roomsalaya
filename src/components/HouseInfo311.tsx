@@ -39,8 +39,8 @@ const HouseInfo311 = () => {
             querySnapshot.forEach((doc) => {
                 invoicesData.push({ id: doc.id, ...doc.data() } as Invoice);
             });
-            // Sort invoices by createdAt in ascending order to show newer invoices below older ones
-            invoicesData.sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
+            // Sort invoices by createdAt in descending order to show newer invoices above older ones
+            invoicesData.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
             setInvoices(invoicesData);
         } catch (e) {
             console.error("Error fetching invoices: ", e);
