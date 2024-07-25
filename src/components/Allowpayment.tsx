@@ -246,6 +246,12 @@ const Allowpayment: React.FC = () => {
                 {isHouse228Visible && <Allowpayment228 />}
                 <pre />
 
+                <button className='button' onClick={toggleHouse329Info}>
+                    {isHouse329Visible ? 'ซ่อน 329 ขออนุญาตชำระ' : '329 ขออนุญาตชำระ'}
+                </button>
+                {isHouse329Visible && <Allowpayment330 />}
+                <pre />
+
                 <button className='button' onClick={toggleHouse330Info}>
                     {isHouse330Visible ? 'ซ่อน 330 ขออนุญาตชำระ' : '330 ขออนุญาตชำระ'}
                 </button>
