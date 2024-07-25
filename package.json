@@ -15,6 +15,7 @@
   "dependencies": {
     "@types/antd": "^1.0.0",
     "antd": "^5.19.3",
+    "axios": "^1.7.2",
     "firebase": "^10.12.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
