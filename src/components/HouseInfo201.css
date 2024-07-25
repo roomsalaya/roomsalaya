@@ -22,7 +22,7 @@ h2{
     border-radius: 4px; /* Rounded corners for button */
     cursor: pointer; /* Pointer cursor on hover */
     font-family: "Kanit", sans-serif;
-    transform: translateY(-150%);
+
 }
 
 .invoice-form input {

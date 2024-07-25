@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
-import './Login.css'; // Import CSS file
+import './Login.css';
+import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons'; // Import icons from Ant Design
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
@@ -21,6 +23,16 @@ const Login: React.FC = () => {
         } catch (err) {
             setError('Login failed');
         }
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            handleLogin();
+        }
+    };
+
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
     };
 
     return (
@@ -40,13 +52,20 @@ const Login: React.FC = () => {
                 placeholder="กรอกอีเมล"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={handleKeyDown}
             />
-            <input
-                type="password"
-                placeholder="กรอกรหัสผ่าน"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className="password-input-container">
+                <input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="กรอกรหัสผ่าน"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                />
+                <span onClick={toggleShowPassword} className="password-toggle-icon">
+                    {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+                </span>
+            </div>
             <button onClick={handleLogin}>Login</button>
         </div>
     );

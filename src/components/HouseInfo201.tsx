@@ -149,7 +149,7 @@ const HouseInfo201 = () => {
     return (
         <div className='house-info-container'>
             <h2>รายการแจ้งหนี้ห้อง 201</h2>
-            <button className='add-invoice-button' onClick={() => setModalIsOpen(true)}>Add Invoice</button>
+            <button className='add-invoice-button' onClick={() => setModalIsOpen(true)}>เพิ่มรายการ</button>
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={handleCancel}
@@ -157,7 +157,7 @@ const HouseInfo201 = () => {
                 className='invoice-modal'
                 overlayClassName='invoice-modal-overlay'
             >
-                <h2>{editingId ? 'Edit Invoice' : 'Add Invoice'}</h2>
+                <h2>{editingId ? 'เพิ่มรายการ' : 'เพิ่มรายการ'}</h2>
                 <form onSubmit={handleSubmit} className='invoice-form'>
                     <input
                         type='text'
