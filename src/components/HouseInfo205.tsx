@@ -34,7 +34,7 @@ const HouseInfo205 = () => {
     // Fetch invoices from Firestore
     const fetchInvoices = async () => {
         try {
-            const querySnapshot = await getDocs(collection(db, "invoices5")); // Use a different collection name
+            const querySnapshot = await getDocs(collection(db, "invoices205")); // Use a different collection name
             const invoicesData: Invoice[] = [];
             querySnapshot.forEach((doc) => {
                 invoicesData.push({ id: doc.id, ...doc.data() } as Invoice);
