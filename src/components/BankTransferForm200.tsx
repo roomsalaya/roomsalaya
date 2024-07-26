@@ -6,7 +6,7 @@ import AppMenu200 from './AppMenu200';
 import { collection, getDocs, addDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage, auth } from '../firebaseConfig';
-import './BankTransferForm200.css';
+import './BankTransferForm201.css';
 
 // ฟังก์ชันในการคัดลอกข้อความไปยังคลิปบอร์ด
 const copyToClipboard = (text: string) => {
