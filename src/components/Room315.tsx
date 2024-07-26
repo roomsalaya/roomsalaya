@@ -45,7 +45,7 @@ const Room315: React.FC = () => {
 
     return (
         <div className='room-info-container'>
-            <h3>ประวัติชำระหนี้ ห้อง 315
+            <h3>รายการค้างชำระ ห้อง 315
                 <AppMenu315 />
             </h3>
             <div className='menu-container'>

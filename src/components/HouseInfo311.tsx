@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { collection, addDoc, updateDoc, doc, getDocs, deleteDoc } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, doc, getDocs, deleteDoc, Timestamp } from 'firebase/firestore';
 import { db, auth } from '../firebaseConfig'; // Adjust the path as needed
 import Modal from 'react-modal';
+import './HouseInfo201.css'; // Import the CSS for styling
 
 interface Invoice {
     id?: string;
@@ -13,7 +14,7 @@ interface Invoice {
     water: string;
     total: string;
     status: boolean; // true for Paid, false for Unpaid
-    createdAt?: { seconds: number }; // Timestamp field from Firestore
+    createdAt?: Timestamp; // Timestamp field from Firestore
 }
 
 const HouseInfo311 = () => {
@@ -34,13 +35,13 @@ const HouseInfo311 = () => {
     // Fetch invoices from Firestore
     const fetchInvoices = async () => {
         try {
-            const querySnapshot = await getDocs(collection(db, "invoices311")); // Use a different collection name
+            const querySnapshot = await getDocs(collection(db, "invoices311")); // Use the correct collection name
             const invoicesData: Invoice[] = [];
             querySnapshot.forEach((doc) => {
                 invoicesData.push({ id: doc.id, ...doc.data() } as Invoice);
             });
-            // Sort invoices by createdAt in ascending order to show newer invoices below older ones
-            invoicesData.sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
+            // Sort invoices by createdAt in descending order to show newer invoices below older ones
+            invoicesData.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
             setInvoices(invoicesData);
         } catch (e) {
             console.error("Error fetching invoices: ", e);
@@ -72,19 +73,19 @@ const HouseInfo311 = () => {
             const invoiceData = {
                 ...form,
                 email: user.email, // Use the authenticated user's email
-                createdAt: new Date(), // Add current timestamp
+                createdAt: Timestamp.now(), // Add current timestamp
             };
 
             if (editingId) {
                 // Update existing invoice
-                const invoiceRef = doc(db, "invoices311", editingId); // Use a different collection name
+                const invoiceRef = doc(db, "invoices311", editingId); // Use the correct collection name
                 await updateDoc(invoiceRef, invoiceData);
                 // Refetch invoices after update
                 await fetchInvoices();
                 setEditingId(null);
             } else {
                 // Add new invoice
-                await addDoc(collection(db, "invoices311"), invoiceData); // Use a different collection name
+                await addDoc(collection(db, "invoices311"), invoiceData); // Use the correct collection name
                 // Refetch invoices after addition
                 await fetchInvoices();
             }
@@ -128,7 +129,7 @@ const HouseInfo311 = () => {
 
     const toggleStatus = async (invoice: Invoice) => {
         try {
-            const invoiceRef = doc(db, "invoices311", invoice.id!); // Use a different collection name
+            const invoiceRef = doc(db, "invoices311", invoice.id!); // Use the correct collection name
             await updateDoc(invoiceRef, { status: !invoice.status });
             fetchInvoices(); // Refresh the invoices list
         } catch (e) {
@@ -138,7 +139,7 @@ const HouseInfo311 = () => {
 
     const handleDelete = async (id: string) => {
         try {
-            await deleteDoc(doc(db, "invoices311", id)); // Use a different collection name
+            await deleteDoc(doc(db, "invoices311", id)); // Use the correct collection name
             fetchInvoices(); // Refresh the invoices list after deletion
         } catch (e) {
             console.error("Error deleting document: ", e);

@@ -33,7 +33,10 @@ const Room311: React.FC = () => {
                     invoicesData.push({ id: doc.id, ...data });
                 });
                 // Sort invoices by createdAt in ascending order (newest at the bottom)
-                invoicesData.sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
+                invoicesData.sort((a, b) => {
+                    if (!a.createdAt || !b.createdAt) return 0;
+                    return a.createdAt.seconds - b.createdAt.seconds;
+                });
                 setInvoices(invoicesData);
             } catch (e) {
                 console.error("Error fetching invoices: ", e);
@@ -45,7 +48,7 @@ const Room311: React.FC = () => {
 
     return (
         <div className='room-info-container'>
-            <h3>ประวัติชำระหนี้ ห้อง 311
+            <h3>รายการค้างชำระ ห้อง 311
                 <AppMenu311 />
             </h3>
             <div className='menu-container'>

@@ -163,13 +163,13 @@ const Allowpayment: React.FC = () => {
                 <pre />
 
                 <button className='button' onClick={toggleHouse206Info}>
-                    {isHouse206Visible ? 'ซ่อน 2061 ขออนุญาตชำระ' : '201 ขออนุญาตชำระ'}
+                    {isHouse206Visible ? 'ซ่อน 206 ขออนุญาตชำระ' : '206 ขออนุญาตชำระ'}
                 </button>
                 {isHouse206Visible && <Allowpayment206 />}
                 <pre />
 
                 <button className='button' onClick={toggleHouse207Info}>
-                    {isHouse207Visible ? 'ซ่อน 207 ขออนุญาตชำระ' : '2071 ขออนุญาตชำระ'}
+                    {isHouse207Visible ? 'ซ่อน 207 ขออนุญาตชำระ' : '207 ขออนุญาตชำระ'}
                 </button>
                 {isHouse207Visible && <Allowpayment207 />}
                 <pre />
@@ -193,7 +193,7 @@ const Allowpayment: React.FC = () => {
                 <pre />
 
                 <button className='button' onClick={toggleHouse311Info}>
-                    {isHouse201Visible ? 'ซ่อน 311 ขออนุญาตชำระ' : '311 ขออนุญาตชำระ'}
+                    {isHouse311Visible ? 'ซ่อน 311 ขออนุญาตชำระ' : '311 ขออนุญาตชำระ'}
                 </button>
                 {isHouse311Visible && <Allowpayment311 />}
                 <pre />
