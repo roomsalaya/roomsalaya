@@ -6,7 +6,7 @@ import AppMenu200 from './AppMenu200'; // Updated to reflect the new component
 import { collection, getDocs, addDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage, auth } from '../firebaseConfig';
-import './BankTransferForm200.css'; // Updated CSS
+import './BankTransferForm201.css'; // Updated CSS
 
 // Function to copy text to clipboard
 const copyToClipboard = (text: string) => {
