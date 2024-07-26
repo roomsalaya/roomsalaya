@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { collection, addDoc, updateDoc, doc, getDocs, deleteDoc } from 'firebase/firestore';
 import { db, auth } from '../firebaseConfig'; // Adjust the path as needed
-import './HouseInfo201.css'; // Import the CSS file
 import Modal from 'react-modal';
 
 interface Invoice {
@@ -35,7 +34,7 @@ const HouseInfo200 = () => {
     // Fetch invoices from Firestore
     const fetchInvoices = async () => {
         try {
-            const querySnapshot = await getDocs(collection(db, "invoices"));
+            const querySnapshot = await getDocs(collection(db, "invoices200")); // Use a different collection name
             const invoicesData: Invoice[] = [];
             querySnapshot.forEach((doc) => {
                 invoicesData.push({ id: doc.id, ...doc.data() } as Invoice);
@@ -78,14 +77,14 @@ const HouseInfo200 = () => {
 
             if (editingId) {
                 // Update existing invoice
-                const invoiceRef = doc(db, "invoices", editingId);
+                const invoiceRef = doc(db, "invoices200", editingId); // Use a different collection name
                 await updateDoc(invoiceRef, invoiceData);
                 // Refetch invoices after update
                 await fetchInvoices();
                 setEditingId(null);
             } else {
                 // Add new invoice
-                await addDoc(collection(db, "invoices"), invoiceData);
+                await addDoc(collection(db, "invoices200"), invoiceData); // Use a different collection name
                 // Refetch invoices after addition
                 await fetchInvoices();
             }
@@ -129,7 +128,7 @@ const HouseInfo200 = () => {
 
     const toggleStatus = async (invoice: Invoice) => {
         try {
-            const invoiceRef = doc(db, "invoices", invoice.id!);
+            const invoiceRef = doc(db, "invoices200", invoice.id!); // Use a different collection name
             await updateDoc(invoiceRef, { status: !invoice.status });
             fetchInvoices(); // Refresh the invoices list
         } catch (e) {
@@ -139,7 +138,7 @@ const HouseInfo200 = () => {
 
     const handleDelete = async (id: string) => {
         try {
-            await deleteDoc(doc(db, "invoices", id));
+            await deleteDoc(doc(db, "invoices200", id)); // Use a different collection name
             fetchInvoices(); // Refresh the invoices list after deletion
         } catch (e) {
             console.error("Error deleting document: ", e);
@@ -149,7 +148,7 @@ const HouseInfo200 = () => {
     return (
         <div className='house-info-container'>
             <h2>รายการแจ้งหนี้ห้อง 200</h2>
-            <button className='add-invoice-button' onClick={() => setModalIsOpen(true)}>เพิ่มรายการ</button>
+            <button className='add-invoice-button' onClick={() => setModalIsOpen(true)}>Add Invoice</button>
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={handleCancel}
@@ -157,7 +156,7 @@ const HouseInfo200 = () => {
                 className='invoice-modal'
                 overlayClassName='invoice-modal-overlay'
             >
-                <h2>{editingId ? 'เพิ่มรายการ' : 'เพิ่มรายการ'}</h2>
+                <h2>{editingId ? 'Edit Invoice' : 'Add Invoice'}</h2>
                 <form onSubmit={handleSubmit} className='invoice-form'>
                     <input
                         type='text'
