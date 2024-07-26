@@ -14,7 +14,7 @@ const PaymentHistory314: React.FC = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const querySnapshot = await getDocs(collection(db, "paymentProofs206")); // Adjust collection name
+            const querySnapshot = await getDocs(collection(db, "paymentProofs314")); // Adjust collection name
             const fetchedData = querySnapshot.docs.map((doc) => {
                 const data = doc.data();
                 return {

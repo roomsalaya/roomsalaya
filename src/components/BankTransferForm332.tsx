@@ -53,7 +53,7 @@ const BankTransferForm332: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const querySnapshot = await getDocs(collection(db, "invoices205"));
+                const querySnapshot = await getDocs(collection(db, "invoices332"));
                 const invoicesData: Invoice[] = querySnapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data() as Invoice
