@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { collection, addDoc, updateDoc, doc, getDocs, deleteDoc } from 'firebase/firestore';
 import { db, auth } from '../firebaseConfig'; // Adjust the path as needed
 import Modal from 'react-modal';
+import './HouseInfo201.css'; // Import the CSS file
 
 interface Invoice {
     id?: string;
