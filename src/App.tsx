@@ -128,6 +128,12 @@ import PaymentHistory329 from './components/PaymentHistory329';
 import PaymentHistory330 from './components/PaymentHistory330';
 import PaymentHistory331 from './components/PaymentHistory331';
 import PaymentHistory332 from './components/PaymentHistory332';
+import UserPage200 from './components/UserPage200';
+import HouseInfo200 from './components/HouseInfo200';
+import Room200 from './components/Room200';
+import BankTransferForm200 from './components/BankTransferForm200';
+import PaymentHistory200 from './components/PaymentHistory200';
+import Allowpayment200 from './components/Allowpayment200';
 
 // Lazy load components
 const AdminPage = lazy(() => import('./components/AdminPage'));
@@ -193,6 +199,7 @@ const App: React.FC = () => {
                     <Route path='/UserPage330' element={<UserPage330 />} />
                     <Route path='/UserPage331' element={<UserPage331 />} />
                     <Route path='/UserPage332' element={<UserPage332 />} />
+                    <Route path='/UserPage200' element={<UserPage200 />} />
 
                     
                     <Route path="/houseinfo201" element={user ? <HouseInfo201 /> : <Navigate to="/login" />} />
@@ -218,6 +225,7 @@ const App: React.FC = () => {
                     <Route path="/houseinfo330" element={user ? <HouseInfo330 /> : <Navigate to="/login" />} />
                     <Route path="/houseinfo331" element={user ? <HouseInfo331 /> : <Navigate to="/login" />} />
                     <Route path="/houseinfo332" element={user ? <HouseInfo332 /> : <Navigate to="/login" />} />
+                    <Route path="/houseinfo200" element={user ? <HouseInfo200 /> : <Navigate to="/login" />} />
                     
                     
                     <Route path="/room201" element={user ? <Room201 /> : <Navigate to="/login" />} />
@@ -243,6 +251,7 @@ const App: React.FC = () => {
                     <Route path="/room330" element={user ? <Room330 /> : <Navigate to="/login" />} />
                     <Route path="/room331" element={user ? <Room331 /> : <Navigate to="/login" />} />
                     <Route path="/room332" element={user ? <Room332 /> : <Navigate to="/login" />} />
+                    <Route path="/room200" element={user ? <Room200 /> : <Navigate to="/login" />} />
                     
                     <Route path="/" element={<Home />} />
 
@@ -269,6 +278,7 @@ const App: React.FC = () => {
                     <Route path='/bank330' element={<BankTransferForm330 />} />
                     <Route path='/bank331' element={<BankTransferForm331 />} />
                     <Route path='/bank332' element={<BankTransferForm332 />} />
+                    <Route path='/bank200' element={<BankTransferForm200 />} />
 
                     <Route path='/paymenthistory201' element={<PaymentHistory201 />} />
                     <Route path='/paymenthistory202' element={<PaymentHistory202 />} />
@@ -293,6 +303,7 @@ const App: React.FC = () => {
                     <Route path='/paymenthistory330' element={<PaymentHistory330 />} />
                     <Route path='/paymenthistory331' element={<PaymentHistory331 />} />
                     <Route path='/paymenthistory332' element={<PaymentHistory332 />} />
+                    <Route path='/paymenthistory200' element={<PaymentHistory200 />} />
                     
                     <Route path='/allowpayment201' element={<Allowpayment201 />} />
                     <Route path='/allowpayment202' element={<Allowpayment202 />} />
@@ -317,6 +328,7 @@ const App: React.FC = () => {
                     <Route path='/allowpayment330' element={<Allowpayment330 />} />
                     <Route path='/allowpayment331' element={<Allowpayment331 />} />
                     <Route path='/allowpayment332' element={<Allowpayment332 />} />
+                    <Route path='/allowpayment200' element={<Allowpayment200 />} />
                     
                     <Route path='/allowpayment' element={<Allowpayment />} />
                     

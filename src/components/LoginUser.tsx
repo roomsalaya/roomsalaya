@@ -88,6 +88,9 @@ const LoginUser: React.FC = () => {
                 case '332@room.com':
                     navigate('/userpage332');
                     break;
+                case '200@room.com':
+                    navigate('/userpage200');
+                    break;
                 default:
                     setError('Unauthorized access.');
                     return;

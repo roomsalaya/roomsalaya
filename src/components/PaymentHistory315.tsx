@@ -71,7 +71,7 @@ const PaymentHistory315: React.FC = () => {
 
     return (
         <div className='payment-history-container'>
-            <h3>ประวัติแจ้งชำระค่าเช่า
+            <h3>ประวัติแจ้งชำระค่าเช่า 315
                 <AppMen315 />
             </h3>
             <Space direction="vertical" size="middle" style={{ width: '100%' }}>

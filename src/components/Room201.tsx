@@ -83,7 +83,7 @@ const Room201: React.FC = () => {
                                         </>
                                     ) : (
                                         <>
-                                            <ClockCircleOutlined /> รออนุมัติชำระ
+                                            <ClockCircleOutlined /> รอชำระ
                                         </>
                                     )}
                                 </button>

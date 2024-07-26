@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Card, Space, Button, message } from 'antd';
 import { ExclamationCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import AppMenu200 from './AppMenu200';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import './PaymentHistory201.css'; // Import your CSS file
-import AppMen329 from './AppMenu329';
+import './PaymentHistory201.css';  // Import your CSS file
 
-const PaymentHistory329: React.FC = () => {
+const PaymentHistory200: React.FC = () => {
     const [data, setData] = useState<{ key: string, item: string, detail: React.ReactNode, status: string }[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -14,7 +14,7 @@ const PaymentHistory329: React.FC = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const querySnapshot = await getDocs(collection(db, "paymentProofs206")); // Adjust collection name
+            const querySnapshot = await getDocs(collection(db, "paymentProofs"));
             const fetchedData = querySnapshot.docs.map((doc) => {
                 const data = doc.data();
                 return {
@@ -71,8 +71,8 @@ const PaymentHistory329: React.FC = () => {
 
     return (
         <div className='payment-history-container'>
-            <h3>ประวัติแจ้งชำระค่าเช่า 329
-                <AppMen329 />
+            <h3>ประวัติแจ้งชำระค่าเช่า 200
+                <AppMenu200 />
             </h3>
             <Space direction="vertical" size="middle" style={{ width: '100%' }}>
                 <Card title="รายละเอียดการชำระเงิน">
@@ -91,4 +91,4 @@ const PaymentHistory329: React.FC = () => {
     );
 };
 
-export default PaymentHistory329;
+export default PaymentHistory200;

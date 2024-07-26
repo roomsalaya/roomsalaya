@@ -24,6 +24,7 @@ import HouseInfo329 from './HouseInfo329';
 import HouseInfo330 from './HouseInfo330';
 import HouseInfo331 from './HouseInfo331';
 import HouseInfo332 from './HouseInfo332';
+import HouseInfo200 from './HouseInfo200';
 
 const AdminPage: React.FC = () => {
     const [isHouseInfo201Visible, setHouseInfo201Visible] = useState(false);
@@ -49,8 +50,11 @@ const AdminPage: React.FC = () => {
     const [isHouseInfo330Visible, setHouseInfo330Visible] = useState(false);
     const [isHouseInfo331Visible, setHouseInfo331Visible] = useState(false);
     const [isHouseInfo332Visible, setHouseInfo332Visible] = useState(false);
+    const [isHouseInfo200Visible, setHouseInfo200Visible] = useState(false);
 
-
+    const toggleHouseInfo200 = () => {
+        setHouseInfo200Visible(prevState => !prevState);
+    };
     const toggleHouseInfo201 = () => {
         setHouseInfo201Visible(prevState => !prevState);
     };
@@ -130,6 +134,12 @@ const AdminPage: React.FC = () => {
             <h2>
                 ตึกสำนักงาน
             </h2>
+            <button className='button' onClick={toggleHouseInfo200}>
+                {isHouseInfo200Visible ? 'ปิดข้อมูล 200' : 'เปิดข้อมูล 200'}
+            </button>
+            {isHouseInfo200Visible && <HouseInfo200 />}
+            <pre></pre>
+
             <button className='button' onClick={toggleHouseInfo201}>
                 {isHouseInfo201Visible ? 'ปิดข้อมูล 201' : 'เปิดข้อมูล 201'}
             </button>

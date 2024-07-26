@@ -23,6 +23,7 @@ import Allowpayment228 from './Allowpayment228';
 import Allowpayment330 from './Allowpayment330';
 import Allowpayment331 from './Allowpayment331';
 import Allowpayment332 from './Allowpayment332';
+import Allowpayment200 from './Allowpayment200';
 
 const Allowpayment: React.FC = () => {
     const [isHouse201Visible, setHouse201Visible] = useState(false);
@@ -48,8 +49,11 @@ const Allowpayment: React.FC = () => {
     const [isHouse330Visible, setHouse330Visible] = useState(false);
     const [isHouse331Visible, setHouse331Visible] = useState(false);
     const [isHouse332Visible, setHouse332Visible] = useState(false);
+    const [isHouse200Visible, setHouse200Visible] = useState(false);
 
-
+    const toggleHouse200Info = () => {
+        setHouse200Visible(prevState => !prevState);
+    };
     const toggleHouse201Info = () => {
         setHouse201Visible(prevState => !prevState);
     };
@@ -128,6 +132,12 @@ const Allowpayment: React.FC = () => {
                 <h2>
                     ตึกสำนักงาน
                 </h2>
+                <button className='button' onClick={toggleHouse200Info}>
+                    {isHouse200Visible ? 'ซ่อน 200 ขออนุญาตชำระ' : '200 ขออนุญาตชำระ'}
+                </button>
+                {isHouse200Visible && <Allowpayment200 />}
+                <pre />
+
                 <button className='button' onClick={toggleHouse201Info}>
                     {isHouse201Visible ? 'ซ่อน 201 ขออนุญาตชำระ' : '201 ขออนุญาตชำระ'}
                 </button>
