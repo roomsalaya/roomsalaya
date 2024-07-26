@@ -68,22 +68,22 @@ const LoginUser: React.FC = () => {
                     navigate('/userpage225');
                     break;
                 case '226@room.com':
-                    navigate('/userpage225');
+                    navigate('/userpage226');
                     break;
                 case '227@room.com':
-                    navigate('/userpage225');
+                    navigate('/userpage227');
                     break;
                 case '228@room.com':
-                    navigate('/userpage225');
+                    navigate('/userpage228');
                     break;
                 case '329@room.com':
-                    navigate('/userpage225');
+                    navigate('/userpage329');
                     break;
                 case '330@room.com':
-                    navigate('/userpage225');
+                    navigate('/userpage330');
                     break;
                 case '331@room.com':
-                    navigate('/userpage225');
+                    navigate('/userpage331');
                     break;
                 case '332@room.com':
                     navigate('/userpage332');
