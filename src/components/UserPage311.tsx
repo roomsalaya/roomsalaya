@@ -1,16 +1,12 @@
 import React from 'react';
 import './UserPage201.css'; // Import CSS file
-import AppMenu311 from './AppMenu311';
+import AppMenu202 from './AppMenu202';
 
-const UserPage311: React.FC = () => {
-    // const navigate = useNavigate(); // Remove if not used
-
+const UserPage201: React.FC = () => {
     return (
-        <div className='user-container'> {/* Adjusted class name to follow convention */}
-            <h3>ห้อง 311</h3>
-            <div className='menu-container'>
-                <AppMenu311 />
-            </div>
+        <div className='User-container'>
+            <h3>ห้อง 202</h3>
+            <div className='menu-container'><AppMenu202 /></div>
             <table>
                 <thead>
                     <tr>
@@ -31,4 +27,4 @@ const UserPage311: React.FC = () => {
     );
 };
 
-export default UserPage311;
+export default UserPage201;
