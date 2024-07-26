@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Card, Space, Button, message } from 'antd';
 import { ExclamationCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
-import AppMenu200 from './AppMenu200';
+import AppMenu200 from './AppMenu200'; // Assuming you have a similar component for Room200
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import './PaymentHistory201.css';  // Import your CSS file
+import './PaymentHistory201.css'; // Import your CSS file
 
 const PaymentHistory200: React.FC = () => {
     const [data, setData] = useState<{ key: string, item: string, detail: React.ReactNode, status: string }[]>([]);
@@ -14,7 +14,7 @@ const PaymentHistory200: React.FC = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const querySnapshot = await getDocs(collection(db, "paymentProofs"));
+            const querySnapshot = await getDocs(collection(db, "paymentProofs200")); // Adjust collection name
             const fetchedData = querySnapshot.docs.map((doc) => {
                 const data = doc.data();
                 return {
