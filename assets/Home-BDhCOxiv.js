@@ -1,1 +1,0 @@
-import{j as n,L as s}from"./index-2l2101Gp.js";const i=()=>n.jsxs("div",{className:"home-container",children:[n.jsx("h2",{children:"ระบบหอพักณิชชาวีร์"}),n.jsx("p",{children:"เข้าสู่ระบบด้วยอีเมลและรหัสที่แอดมินแจ้ง"}),n.jsx(s,{to:"/login",children:"Login Admin"}),n.jsx(s,{to:"/loginuser",children:"เข้าสู่ระบบผู้เช่า"})]});export{i as default};
