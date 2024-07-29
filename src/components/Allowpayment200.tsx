@@ -5,7 +5,6 @@ import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import './Allowpayment201.css';  // Import your CSS file
 
-// Define the interface for payment proof data
 interface PaymentProof {
     key: string;
     item: string;
@@ -13,16 +12,18 @@ interface PaymentProof {
     status: string;
 }
 
-const Allowpayment200: React.FC = () => {
-    // State for holding data
+interface Allowpayment200Props {
+    onApproval: () => void;
+}
+
+const Allowpayment200: React.FC<Allowpayment200Props> = ({ onApproval }) => {
     const [data, setData] = useState<PaymentProof[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
-    // Fetch data from Firestore
     const fetchData = async () => {
         setLoading(true);
         try {
-            const querySnapshot = await getDocs(collection(db, "paymentProofs"));
+            const querySnapshot = await getDocs(collection(db, "paymentProofs200")); // Adjust collection name
             const fetchedData: PaymentProof[] = querySnapshot.docs.map((doc) => {
                 const data = doc.data();
                 return {
@@ -49,16 +50,14 @@ const Allowpayment200: React.FC = () => {
         }
     };
 
-    // Fetch data on component mount
     useEffect(() => {
         fetchData();
     }, []);
 
-    // Function to update status in Firestore
     const handleStatusChange = async (key: string, currentStatus: string) => {
         const newStatus = currentStatus === 'pending' ? 'approved' : 'pending';
-        const docRef = doc(db, "paymentProofs", key);
-
+        const docRef = doc(db, "paymentProofs200", key); // Adjust collection name
+        
         try {
             await updateDoc(docRef, { status: newStatus });
             setData(prevData =>
@@ -67,13 +66,15 @@ const Allowpayment200: React.FC = () => {
                 )
             );
             message.success('สถานะอัปเดตสำเร็จ');
+            if (newStatus === 'approved') {
+                onApproval();
+            }
         } catch (error) {
             console.error('Error updating status: ', error);
             message.error('เกิดข้อผิดพลาดในการอัปเดตสถานะ');
         }
     };
 
-    // Columns for the table
     const columns = [
         { title: 'รายการที่เลือก', dataIndex: 'item', key: 'item' },
         { title: 'รายละเอียด', dataIndex: 'detail', key: 'detail' },
@@ -98,8 +99,7 @@ const Allowpayment200: React.FC = () => {
 
     return (
         <div className='payment-history-container'>
-            <h3>ประวัติแจ้งชำระค่าเช่า
-            </h3>
+            <h3>ประวัติแจ้งชำระค่าเช่า</h3>
             <Space direction="vertical" size="middle" style={{ width: '100%' }}>
                 <Card title="รายละเอียดการชำระเงิน">
                     <Table 

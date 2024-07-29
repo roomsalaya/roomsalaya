@@ -40,3 +40,27 @@
 .User-container tbody tr:hover {
     background-color: #f1f1f1;
 }
+
+.notification-button {
+    background-color: #fff;
+    border: none;
+    padding: 10px 15px;
+    font-family: 'Kanit', sans-serif;
+    box-shadow: 2px 1px 5px silver;
+    justify-content: right;
+}
+
+.notification-button button:hover {
+    background-color: #f0f0f0;
+}
+
+.notification-button button {
+    z-index: 9999;
+}
+
+.notification-button{
+    display: flex;
+    transform: translateX(230px);
+    margin-top: -132px;
+    margin-bottom: 50px;
+}

@@ -59,8 +59,8 @@ const PaymentHistory200: React.FC = () => {
                     type="default"
                     icon={status === 'pending' ? <CheckCircleOutlined /> : <ExclamationCircleOutlined/>}
                     style={{ 
-                        backgroundColor: status === 'pending' ? '#f0f9eb' : '#f4f4f4', 
-                        color: status === 'pending' ?  '#52c41a' : '#faad14' 
+                        backgroundColor: status === 'อนุมัติชำระ' ? '#f0f9eb' : '#f4f4f4', 
+                        color: status === 'รออนุมัติชำระ' ?  '#52c41a' : '#faad14' 
                     }}
                 >
                     {status === 'pending' ? 'อนุมัติชำระ' : 'รออนุมัติชำระ'}
