@@ -133,8 +133,8 @@ import HouseInfo200 from './components/HouseInfo200';
 import Room200 from './components/Room200';
 import BankTransferForm200 from './components/BankTransferForm200';
 import PaymentHistory200 from './components/PaymentHistory200';
-import Allowpayment200 from './components/Allowpayment200';
 import Manual from './components/Manual';
+import Allowpayment200 from './components/Allowpayment200';
 
 // Lazy load components
 const AdminPage = lazy(() => import('./components/AdminPage'));
@@ -334,6 +334,7 @@ const App: React.FC = () => {
                     <Route path='/allowpayment330' element={<Allowpayment330 />} />
                     <Route path='/allowpayment331' element={<Allowpayment331 />} />
                     <Route path='/allowpayment332' element={<Allowpayment332 />} />
+                    <Route path='/allowpayment200' element={<Allowpayment200 />} />
                     
                     <Route path='/allowpayment' element={<Allowpayment />} />
 
