@@ -169,11 +169,6 @@ const App: React.FC = () => {
         return () => unsubscribe();
     }, []);
 
-    const handleApproval = () => {
-        // Your function logic here
-        console.log('Approval handled');
-    };
-
     return (
         <BrowserRouter basename="/roomsalaya">
             <Suspense fallback={<div>Loading...</div>}>
