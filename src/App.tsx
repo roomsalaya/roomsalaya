@@ -169,6 +169,11 @@ const App: React.FC = () => {
         return () => unsubscribe();
     }, []);
 
+    const handleApproval = () => {
+        // Your function logic here
+        console.log('Approval handled');
+    };
+
     return (
         <BrowserRouter basename="/roomsalaya">
             <Suspense fallback={<div>Loading...</div>}>
@@ -329,7 +334,7 @@ const App: React.FC = () => {
                     <Route path='/allowpayment330' element={<Allowpayment330 />} />
                     <Route path='/allowpayment331' element={<Allowpayment331 />} />
                     <Route path='/allowpayment332' element={<Allowpayment332 />} />
-                    <Route path='/allowpayment200' element={<Allowpayment200 />} />
+                    <Allowpayment200 onApproval={handleApproval} />
                     
                     <Route path='/allowpayment' element={<Allowpayment />} />
 
