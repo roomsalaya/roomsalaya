@@ -3,7 +3,7 @@ import { Table, Card, Space, Button, message } from 'antd';
 import { ExclamationCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import './Allowpayment201.css';  // Import your CSS file
+import './Allowpayment201.css'; // Import your CSS file
 
 interface PaymentProof {
     key: string;

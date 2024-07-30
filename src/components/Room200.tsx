@@ -57,6 +57,9 @@ const Room200: React.FC = () => {
             </h3>
             <div className='menu-container'>
             </div>
+            <div className='pending-count'>
+                <p>จำนวนรอการชำระ: {pendingCount}</p>
+            </div>
             <table>
                 <thead>
                     <tr>
