@@ -20,6 +20,7 @@ interface Invoice {
 
 const Room200: React.FC = () => {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
+    const [pendingCount, setPendingCount] = useState<number>(0);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -34,6 +35,10 @@ const Room200: React.FC = () => {
                 // Sort invoices by createdAt in ascending order (newest at the bottom)
                 invoicesData.sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
                 setInvoices(invoicesData);
+
+                // Calculate the count of pending invoices
+                const pending = invoicesData.filter(invoice => !invoice.status).length;
+                setPendingCount(pending);
             } catch (e) {
                 console.error("Error fetching invoices: ", e);
             }
@@ -44,8 +49,11 @@ const Room200: React.FC = () => {
 
     return (
         <div className='room-info-container'>
-            <h3>ประวัติชำระหนี้ ห้อง 200
-            <AppMenu200 />
+            <h3>
+                ประวัติชำระหนี้ ห้อง 200
+                <div className='app-menu-container'>
+                    <AppMenu200 />
+                </div>
             </h3>
             <div className='menu-container'>
             </div>
