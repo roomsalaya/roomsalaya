@@ -334,7 +334,6 @@ const App: React.FC = () => {
                     <Route path='/allowpayment330' element={<Allowpayment330 />} />
                     <Route path='/allowpayment331' element={<Allowpayment331 />} />
                     <Route path='/allowpayment332' element={<Allowpayment332 />} />
-                    <Allowpayment200 onApproval={handleApproval} />
                     
                     <Route path='/allowpayment' element={<Allowpayment />} />
 
