@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebaseConfig'; // Adjust the path as needed
 import './Room201.css';
 import AppMenu201 from './AppMenu201';
-import { CheckCircleOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined, ClockCircleOutlined, DownloadOutlined } from '@ant-design/icons';
 
 interface Invoice {
-    id?: string; // Add id to the interface
+    id?: string;
     month: string;
     name: string;
     room: string;
@@ -14,8 +14,9 @@ interface Invoice {
     electricity: string;
     water: string;
     total: string;
-    status: boolean; // true for Paid, false for Unpaid
-    createdAt?: { seconds: number }; // Add createdAt to handle timestamp
+    status: boolean;
+    createdAt?: { seconds: number };
+    fileURL?: string; // Add fileURL for PDF download
 }
 
 const Room201: React.FC = () => {
@@ -28,10 +29,8 @@ const Room201: React.FC = () => {
                 const invoicesData: Invoice[] = [];
                 querySnapshot.forEach((doc) => {
                     const data = doc.data() as Invoice;
-                    // Add document ID and timestamp to the invoice data
                     invoicesData.push({ id: doc.id, ...data });
                 });
-                // Sort invoices by createdAt in ascending order (newest at the bottom)
                 invoicesData.sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
                 setInvoices(invoicesData);
             } catch (e) {
@@ -44,8 +43,11 @@ const Room201: React.FC = () => {
 
     return (
         <div className='room-info-container'>
-            <h3>รายการค้างชำระ ห้อง 201
-            <AppMenu201 />
+            <h3>
+                ประวัติชำระหนี้ ห้อง 201
+                <div className='app-menu-container'>
+                    <AppMenu201 />
+                </div>
             </h3>
             <div className='menu-container'>
             </div>
@@ -60,6 +62,7 @@ const Room201: React.FC = () => {
                         <th>ค่าน้ำ</th>
                         <th>รวม</th>
                         <th>สถานะ</th>
+                        <th>ไฟล์ PDF</th> {/* Add PDF column header */}
                     </tr>
                 </thead>
                 <tbody>
@@ -87,6 +90,13 @@ const Room201: React.FC = () => {
                                         </>
                                     )}
                                 </button>
+                            </td>
+                            <td>
+                                {invoice.fileURL ? (
+                                    <a href={invoice.fileURL} target="_blank" rel="noopener noreferrer" className='download-link'>
+                                        <DownloadOutlined /> PDF
+                                    </a>
+                                ) : '-'}
                             </td>
                         </tr>
                     ))}

@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebaseConfig'; // Adjust the path as needed
 import './Room201.css';
-import { CheckCircleOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import AppMenu330 from './AppMenu330';
+import { CheckCircleOutlined, ClockCircleOutlined, DownloadOutlined } from '@ant-design/icons';
 
-// Define the Invoice interface
 interface Invoice {
     id?: string;
     month: string;
@@ -15,8 +14,9 @@ interface Invoice {
     electricity: string;
     water: string;
     total: string;
-    status: boolean; // true for Paid, false for Unpaid
-    createdAt?: { seconds: number }; // Optional timestamp
+    status: boolean;
+    createdAt?: { seconds: number };
+    fileURL?: string; // Add fileURL for PDF download
 }
 
 const Room330: React.FC = () => {
@@ -29,10 +29,8 @@ const Room330: React.FC = () => {
                 const invoicesData: Invoice[] = [];
                 querySnapshot.forEach((doc) => {
                     const data = doc.data() as Invoice;
-                    // Add document ID and timestamp to the invoice data
                     invoicesData.push({ id: doc.id, ...data });
                 });
-                // Sort invoices by createdAt in ascending order (newest at the bottom)
                 invoicesData.sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
                 setInvoices(invoicesData);
             } catch (e) {
@@ -45,8 +43,11 @@ const Room330: React.FC = () => {
 
     return (
         <div className='room-info-container'>
-            <h3>รายการค้างชำระ ห้อง 330
-                <AppMenu330 />
+            <h3>
+                ประวัติชำระหนี้ ห้อง 330
+                <div className='app-menu-container'>
+                    <AppMenu330 />
+                </div>
             </h3>
             <div className='menu-container'>
             </div>
@@ -61,6 +62,7 @@ const Room330: React.FC = () => {
                         <th>ค่าน้ำ</th>
                         <th>รวม</th>
                         <th>สถานะ</th>
+                        <th>ไฟล์ PDF</th> {/* Add PDF column header */}
                     </tr>
                 </thead>
                 <tbody>
@@ -88,6 +90,13 @@ const Room330: React.FC = () => {
                                         </>
                                     )}
                                 </button>
+                            </td>
+                            <td>
+                                {invoice.fileURL ? (
+                                    <a href={invoice.fileURL} target="_blank" rel="noopener noreferrer" className='download-link'>
+                                        <DownloadOutlined /> PDF
+                                    </a>
+                                ) : '-'}
                             </td>
                         </tr>
                     ))}
