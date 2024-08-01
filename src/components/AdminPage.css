@@ -13,3 +13,15 @@
     border: 1px solid #ccc;
     border-radius: 15px;
 }
+
+.AdminPage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notification-icon {
+    font-size: 24px;
+    cursor: pointer;
+    color: #1890ff; /* Example color, adjust as needed */
+}
