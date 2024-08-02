@@ -21,9 +21,17 @@ const UserPage206: React.FC = () => {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>นายธีรภัทร </td>
+                        <td>นายธีรภัทร์ มั่นคง</td>
                         <td>3,200</td>
-                        <td>-</td>
+                        <td>1 ส.ค. 67 ถึง 31 ม.ค. 68</td>
+                    </tr>
+                    <tr>
+                        <th>ค่าไฟยูนิตละ</th>
+                        <th>ค่าน้ำเหมาจ่าย</th>
+                    </tr>
+                    <tr>
+                        <td>9 บาท</td>
+                        <td>100 บาท</td>
                     </tr>
                 </tbody>
             </table>
