@@ -144,8 +144,8 @@ const BankTransferForm310: React.FC = () => {
             </h3>
             <Space className='space' direction="vertical" size="middle">
                 <Card className='card' title="บัญชีสำหรับชำระหนี้">
-                    <p className='scb'>
-                        <img src="https://i.ibb.co/7yzngyM/scb-bank-logo.png" alt="Bank Logo" className='logo-image' />
+                <p className='scb'>
+                        <img src="https://img5.pic.in.th/file/secure-sv1/unnamed4edf9fa04b6e50f3.png" alt="Bank Logo" className='logo-image' />
                         &nbsp; ธนาคารไทยพาณิชย์
                     </p>
                     <p className='scb'>
@@ -157,10 +157,13 @@ const BankTransferForm310: React.FC = () => {
                             <Button
                                 shape="circle"
                                 icon={<CopyOutlined />}
-                                onClick={() => copyToClipboard('403-992701-1')}
+                                onClick={() => copyToClipboard('4039927011')}
                                 className='copy-button'
                             />
                         </Tooltip>
+                    </p>
+                    <p className='scb1'>
+                        กำหนดชำระล่าช้าไม่เกินวันที่ 5 ของเดือนถัดไป
                     </p>
                 </Card>
                 <Button
