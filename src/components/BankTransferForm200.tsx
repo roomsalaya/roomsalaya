@@ -2,11 +2,11 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Card, Space, Button, Tooltip, message, Dropdown, Menu, notification } from 'antd';
 import { CopyOutlined, DownOutlined, UploadOutlined, DeleteOutlined, CheckOutlined, HistoryOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import AppMenu200 from './AppMenu200'; // อัปเดตเพื่อสะท้อนคอมโพเนนต์ใหม่
+import AppMenu200 from './AppMenu200';
 import { collection, getDocs, addDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage, auth } from '../firebaseConfig';
-import './BankTransferForm201.css'; // อัปเดต CSS
+import './BankTransferForm201.css';
 
 const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
@@ -26,7 +26,7 @@ interface Invoice {
     water: string;
     total: string;
     status: boolean; // true สำหรับชำระแล้ว, false สำหรับยังไม่ชำระ
-    createdAt?: { seconds: number }; // ฟิลด์ Timestamp
+    createdAt?: { seconds: number };
 }
 
 const DropdownMenu: React.FC<{ invoices: Invoice[], onSelect: (text: string) => void }> = ({ invoices, onSelect }) => (
@@ -42,7 +42,7 @@ const DropdownMenu: React.FC<{ invoices: Invoice[], onSelect: (text: string) => 
 const BankTransferForm200: React.FC = () => {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
     const [selectedText, setSelectedText] = useState<string>('เลือกใบแจ้งหนี้ที่จะชำระ');
-    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [selectedImage, setSelectedImage] = useState<File | null>(null); // ใช้ File แทน URL
     const fileInputRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
 
@@ -72,16 +72,12 @@ const BankTransferForm200: React.FC = () => {
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setSelectedImage(imageUrl);
+            setSelectedImage(file);
             message.success(`ไฟล์ "${file.name}" ได้รับการเลือกแล้ว`);
         }
     };
 
     const handleRemoveImage = () => {
-        if (selectedImage) {
-            URL.revokeObjectURL(selectedImage); // ปล่อยหน่วยความจำ
-        }
         setSelectedImage(null);
         message.info('ลบภาพออกแล้ว');
     };
@@ -106,7 +102,7 @@ const BankTransferForm200: React.FC = () => {
     const notifyLineGroup = async (invoice: string, imageUrl: string) => {
         const token = '2aDKUQzI2hPap5H5gzTmjaz65EJA233P1vFq88B8XdQ'; // ใช้ token ของคุณที่นี่
         const message = `คุณได้ส่งหลักฐานการชำระเงินสำหรับ ${invoice}`;
-    
+
         try {
             const response = await fetch('https://notify-api.line.me/api/notify', {
                 method: 'POST',
@@ -120,17 +116,17 @@ const BankTransferForm200: React.FC = () => {
                     imageFullsize: imageUrl,
                 }),
             });
-    
+
             if (!response.ok) {
                 throw new Error('เกิดข้อผิดพลาดในการส่งการแจ้งเตือนไปยัง LINE');
             }
-    
+
             console.log('ส่งการแจ้งเตือนสำเร็จ');
         } catch (error) {
             console.error('เกิดข้อผิดพลาดในการแจ้งเตือน LINE: ', error);
         }
     };
-    
+
     const handleSubmitProof = async () => {
         if (!selectedImage || selectedText === 'เลือกใบแจ้งหนี้ที่จะชำระ') {
             message.error('กรุณาเลือกหลักฐานการชำระเงินและใบแจ้งหนี้ที่จะชำระ');
@@ -145,10 +141,8 @@ const BankTransferForm200: React.FC = () => {
             }
 
             const imageRef = ref(storage, `proofs200/${Date.now()}_${Math.random()}`);
-            const response = await fetch(selectedImage);
-            const blob = await response.blob();
-            await uploadBytes(imageRef, blob);
-
+            const blob = await selectedImage?.arrayBuffer();
+            await uploadBytes(imageRef, new Uint8Array(blob || []));
             const downloadURL = await getDownloadURL(imageRef);
 
             await addDoc(collection(db, "paymentProofs200"), {
@@ -160,7 +154,7 @@ const BankTransferForm200: React.FC = () => {
 
             message.success('ส่งหลักฐานการชำระเงินเรียบร้อยแล้ว');
             notifyUser(selectedText);
-            notifyLineGroup(selectedText, downloadURL); // เรียกใช้ฟังก์ชันแจ้งเตือน LINE Notify
+            notifyLineGroup(selectedText, downloadURL);
             navigate('/paymenthistory200', { state: { selectedText, selectedImage: downloadURL } });
         } catch (error) {
             console.error('เกิดข้อผิดพลาดในการส่งหลักฐาน: ', error);
@@ -239,7 +233,7 @@ const BankTransferForm200: React.FC = () => {
                     </div>
                     {selectedImage && (
                         <div className='image-container'>
-                            <img src={selectedImage} alt="Selected" className='selected-image' />
+                            <img src={URL.createObjectURL(selectedImage)} alt="Selected" className='selected-image' />
                             <Button
                                 icon={<DeleteOutlined />}
                                 onClick={handleRemoveImage}
