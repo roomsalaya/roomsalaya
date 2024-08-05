@@ -24,6 +24,7 @@ import Allowpayment330 from './Allowpayment330';
 import Allowpayment331 from './Allowpayment331';
 import Allowpayment332 from './Allowpayment332';
 import Allowpayment200 from './Allowpayment200';
+import Allowpayment329 from './Allowpayment329';
 
 const Allowpayment: React.FC = () => {
     
@@ -260,7 +261,7 @@ const Allowpayment: React.FC = () => {
                 <button className='button' onClick={toggleHouse329Info}>
                     {isHouse329Visible ? 'ซ่อน 329 ขออนุญาตชำระ' : '329 ขออนุญาตชำระ'}
                 </button>
-                {isHouse329Visible && <Allowpayment330 />}
+                {isHouse329Visible && <Allowpayment329 />}
                 <pre />
 
                 <button className='button' onClick={toggleHouse330Info}>
