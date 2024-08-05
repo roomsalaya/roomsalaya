@@ -4,7 +4,7 @@ import { ExclamationCircleOutlined, CheckCircleOutlined } from '@ant-design/icon
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import './PaymentHistory201.css'; // Import your CSS file
-import AppMen329 from './AppMenu329';
+import AppMenu329 from './AppMenu329';
 
 const PaymentHistory329: React.FC = () => {
     const [data, setData] = useState<{ key: string, item: string, detail: React.ReactNode, status: string }[]>([]);
@@ -72,7 +72,7 @@ const PaymentHistory329: React.FC = () => {
     return (
         <div className='payment-history-container'>
             <h3>ประวัติแจ้งชำระค่าเช่า 329
-                <AppMen329 />
+                <AppMenu329 />
             </h3>
             <Space direction="vertical" size="middle" style={{ width: '100%' }}>
                 <Card title="รายละเอียดการชำระเงิน">
