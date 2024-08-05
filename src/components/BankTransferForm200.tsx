@@ -104,33 +104,33 @@ const BankTransferForm200: React.FC = () => {
     };
 
     const notifyLineGroup = async (invoice: string, imageUrl: string) => {
-        const token = '2aDKUQzI2hPap5H5gzTmjaz65EJA233P1vFq88B8XdQ';
-        const messageContent = `คุณได้ส่งหลักฐานการชำระเงินสำหรับ ${invoice}`;
-
+        const token = '2aDKUQzI2hPap5H5gzTmjaz65EJA233P1vFq88B8XdQ'; // ใช้ token ของคุณที่นี่
+        const message = `คุณได้ส่งหลักฐานการชำระเงินสำหรับ ${invoice}`;
+    
         try {
-            const response = await fetch('/api/notify', {
+            const response = await fetch('https://notify-api.line.me/api/notify', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'Authorization': `Bearer ${token}`,
                 },
                 body: new URLSearchParams({
-                    message: messageContent,
+                    message: message,
                     imageThumbnail: imageUrl,
                     imageFullsize: imageUrl,
                 }),
             });
-
+    
             if (!response.ok) {
                 throw new Error('เกิดข้อผิดพลาดในการส่งการแจ้งเตือนไปยัง LINE');
             }
-
+    
             console.log('ส่งการแจ้งเตือนสำเร็จ');
         } catch (error) {
             console.error('เกิดข้อผิดพลาดในการแจ้งเตือน LINE: ', error);
         }
     };
-
+    
     const handleSubmitProof = async () => {
         if (!selectedImage || selectedText === 'เลือกใบแจ้งหนี้ที่จะชำระ') {
             message.error('กรุณาเลือกหลักฐานการชำระเงินและใบแจ้งหนี้ที่จะชำระ');
