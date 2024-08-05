@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Card, Space, Button, Tooltip, message, Dropdown, Menu, notification } from 'antd';
+import { Card, Space, Button, Tooltip, message, Dropdown, Menu } from 'antd';
 import { CopyOutlined, DownOutlined, UploadOutlined, DeleteOutlined, CheckOutlined, HistoryOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import AppMenu200 from './AppMenu200';
+import AppMenu200 from './AppMenu200'; // อัปเดตเพื่อสะท้อนคอมโพเนนต์ใหม่
 import { collection, getDocs, addDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage, auth } from '../firebaseConfig';
-import './BankTransferForm201.css';
+import './BankTransferForm201.css'; // อัปเดต CSS
 
+// ฟังก์ชันในการคัดลอกข้อความไปยังคลิปบอร์ด
 const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
         message.success('คัดลอกไปยังคลิปบอร์ด');
@@ -16,6 +17,7 @@ const copyToClipboard = (text: string) => {
     });
 };
 
+// อินเตอร์เฟซสำหรับข้อมูลใบแจ้งหนี้
 interface Invoice {
     id?: string;
     month: string;
@@ -26,9 +28,10 @@ interface Invoice {
     water: string;
     total: string;
     status: boolean; // true สำหรับชำระแล้ว, false สำหรับยังไม่ชำระ
-    createdAt?: { seconds: number };
+    createdAt?: { seconds: number }; // ฟิลด์ Timestamp
 }
 
+// เมนูดรอปดาวน์สำหรับการเลือกใบแจ้งหนี้
 const DropdownMenu: React.FC<{ invoices: Invoice[], onSelect: (text: string) => void }> = ({ invoices, onSelect }) => (
     <Menu onClick={({ key }) => onSelect(key)}>
         {invoices.map((invoice) => (
@@ -42,14 +45,15 @@ const DropdownMenu: React.FC<{ invoices: Invoice[], onSelect: (text: string) => 
 const BankTransferForm200: React.FC = () => {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
     const [selectedText, setSelectedText] = useState<string>('เลือกใบแจ้งหนี้ที่จะชำระ');
-    const [selectedImage, setSelectedImage] = useState<File | null>(null); // ใช้ File แทน URL
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
 
+    // ดึงข้อมูลใบแจ้งหนี้จาก Firestore เมื่อคอมโพเนนต์ถูกติดตั้ง
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const querySnapshot = await getDocs(collection(db, "invoices200"));
+                const querySnapshot = await getDocs(collection(db, "invoices200")); // ปรับชื่อคอลเลกชันสำหรับห้อง 200
                 const invoicesData: Invoice[] = querySnapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data() as Invoice
@@ -65,68 +69,33 @@ const BankTransferForm200: React.FC = () => {
         fetchData();
     }, []);
 
+    // จัดการการเลือกใบแจ้งหนี้จากเมนูดรอปดาวน์
     const handleMenuSelect = (text: string) => {
         setSelectedText(text);
     };
 
+    // จัดการการเลือกไฟล์
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            setSelectedImage(file);
+            const imageUrl = URL.createObjectURL(file);
+            setSelectedImage(imageUrl);
             message.success(`ไฟล์ "${file.name}" ได้รับการเลือกแล้ว`);
         }
     };
 
+    // ลบภาพที่เลือก
     const handleRemoveImage = () => {
         setSelectedImage(null);
         message.info('ลบภาพออกแล้ว');
     };
 
+    // คลิกเพื่อเปิดตัวเลือกไฟล์
     const handleAttachImageClick = () => {
-        fileInputRef.current?.click();
+        fileInputRef.current?.click(); // เปิดตัวเลือกไฟล์
     };
 
-    const notifyUser = (invoice: string) => {
-        notification.success({
-            message: 'แจ้งเตือนการชำระเงิน',
-            description: `คุณได้ส่งหลักฐานการชำระเงินสำหรับ ${invoice} สำเร็จ`,
-            placement: 'bottomRight',
-            duration: 5,
-            icon: <CheckOutlined />,
-            onClick: () => {
-                console.log('Notification Clicked!');
-            },
-        });
-    };
-
-    const notifyLineGroup = async (invoice: string, imageUrl: string) => {
-        const token = '2aDKUQzI2hPap5H5gzTmjaz65EJA233P1vFq88B8XdQ'; // ใช้ token ของคุณที่นี่
-        const message = `คุณได้ส่งหลักฐานการชำระเงินสำหรับ ${invoice}`;
-
-        try {
-            const response = await fetch('https://notify-api.line.me/api/notify', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: new URLSearchParams({
-                    message: message,
-                    imageThumbnail: imageUrl,
-                    imageFullsize: imageUrl,
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error('เกิดข้อผิดพลาดในการส่งการแจ้งเตือนไปยัง LINE');
-            }
-
-            console.log('ส่งการแจ้งเตือนสำเร็จ');
-        } catch (error) {
-            console.error('เกิดข้อผิดพลาดในการแจ้งเตือน LINE: ', error);
-        }
-    };
-
+    // จัดการการส่งหลักฐานการชำระเงิน
     const handleSubmitProof = async () => {
         if (!selectedImage || selectedText === 'เลือกใบแจ้งหนี้ที่จะชำระ') {
             message.error('กรุณาเลือกหลักฐานการชำระเงินและใบแจ้งหนี้ที่จะชำระ');
@@ -141,11 +110,13 @@ const BankTransferForm200: React.FC = () => {
             }
 
             const imageRef = ref(storage, `proofs200/${Date.now()}_${Math.random()}`);
-            const blob = await selectedImage?.arrayBuffer();
-            await uploadBytes(imageRef, new Uint8Array(blob || []));
+            const response = await fetch(selectedImage);
+            const blob = await response.blob();
+            await uploadBytes(imageRef, blob);
+
             const downloadURL = await getDownloadURL(imageRef);
 
-            await addDoc(collection(db, "paymentProofs200"), {
+            await addDoc(collection(db, "paymentProofs200"), { // ปรับชื่อคอลเลกชันสำหรับห้อง 200
                 invoice: selectedText,
                 imageUrl: downloadURL,
                 status: 'รอการอนุมัติ',
@@ -153,24 +124,23 @@ const BankTransferForm200: React.FC = () => {
             });
 
             message.success('ส่งหลักฐานการชำระเงินเรียบร้อยแล้ว');
-            notifyUser(selectedText);
-            notifyLineGroup(selectedText, downloadURL);
-            navigate('/paymenthistory200', { state: { selectedText, selectedImage: downloadURL } });
+            navigate('/paymenthistory200', { state: { selectedText, selectedImage: downloadURL } }); // ปรับเส้นทางการนำทาง
         } catch (error) {
             console.error('เกิดข้อผิดพลาดในการส่งหลักฐาน: ', error);
             message.error('เกิดข้อผิดพลาดในการส่งหลักฐานการชำระเงิน');
         }
     };
 
+    // จัดการการนำทางไปยังประวัติการชำระเงิน
     const handleViewHistory = () => {
-        navigate('/paymenthistory200');
+        navigate('/paymenthistory200'); // นำทางไปยังหน้าประวัติการชำระเงิน
     };
 
     return (
         <div className='bank-container'>
             <h3>
                 แจ้งชำระค่าเช่า 200
-                <AppMenu200 />
+                <AppMenu200 /> {/* อัปเดตเพื่อสะท้อนคอมโพเนนต์ใหม่ */}
             </h3>
             <Space className='space' direction="vertical" size="middle">
                 <Card className='card' title="บัญชีสำหรับชำระหนี้">
@@ -189,7 +159,6 @@ const BankTransferForm200: React.FC = () => {
                                 icon={<CopyOutlined />}
                                 onClick={() => copyToClipboard('4039927011')}
                                 className='copy-button'
-                                aria-label="คัดลอกหมายเลขบัญชี"
                             />
                         </Tooltip>
                     </p>
@@ -211,45 +180,46 @@ const BankTransferForm200: React.FC = () => {
                             {selectedText} <DownOutlined />
                         </Button>
                     </Dropdown>
-                </Card>
-                <Card className='card' title="หลักฐานการชำระเงิน">
+                    <pre />
                     <input
                         type="file"
+                        id="file-input"
                         accept="image/*"
                         onChange={handleFileChange}
+                        className='file-input'
+                        aria-label="เลือกไฟล์ภาพเพื่ออัปโหลด"
                         ref={fileInputRef}
-                        style={{ display: 'none' }}
-                        title="เลือกไฟล์หลักฐานการชำระเงิน"
+                        style={{ display: 'none' }} // ซ่อนตัวเลือกไฟล์
                     />
-                    <div className="upload-container">
-                        <Button
-                            icon={<UploadOutlined />}
-                            onClick={handleAttachImageClick}
-                            className='attach-button'
-                            aria-label="แนบไฟล์หลักฐานการชำระเงิน"
-                        >
-                            แนบไฟล์หลักฐาน
-                        </Button>
-                    </div>
+                    <Button
+                        icon={<UploadOutlined />}
+                        onClick={handleAttachImageClick}
+                        className='upload-button'
+                        aria-label="แนบรูปภาพ"
+                    >
+                        แนบรูปภาพ
+                    </Button>
+                    <pre />
                     {selectedImage && (
-                        <div className='image-container'>
-                            <img src={URL.createObjectURL(selectedImage)} alt="Selected" className='selected-image' />
+                        <div className='image-preview'>
+                            <img src={selectedImage} alt="Selected" className='image-preview-img' />
                             <Button
                                 icon={<DeleteOutlined />}
                                 onClick={handleRemoveImage}
-                                className='remove-button'
-                                aria-label="ลบภาพที่เลือก"
-                            />
+                                className='remove-image-button'
+                                aria-label="ลบภาพที่แนบ"
+                            >
+                                ลบภาพ
+                            </Button>
                         </div>
                     )}
                     <Button
-                        type="primary"
                         icon={<CheckOutlined />}
                         onClick={handleSubmitProof}
                         className='submit-button'
-                        aria-label="ส่งหลักฐานการชำระเงิน"
+                        aria-label="ส่งหลักฐานการชำระ"
                     >
-                        ส่งหลักฐานการชำระเงิน
+                        กดส่งแจ้งหลักฐานการชำระ
                     </Button>
                 </Card>
             </Space>
