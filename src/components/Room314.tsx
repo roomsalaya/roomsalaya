@@ -13,6 +13,7 @@ interface Invoice {
     rent: string;
     electricity: string;
     water: string;
+    fine?: string; // Add fine field
     total: string;
     status: boolean;
     createdAt?: { seconds: number };
@@ -60,6 +61,7 @@ const Room314: React.FC = () => {
                         <th>ค่าเช่า</th>
                         <th>ค่าไฟ</th>
                         <th>ค่าน้ำ</th>
+                        <th>ค่าปรับ</th> {/* Add fine column header */}
                         <th>รวม</th>
                         <th>สถานะ</th>
                         <th>ไฟล์ PDF</th> {/* Add PDF column header */}
@@ -74,6 +76,7 @@ const Room314: React.FC = () => {
                             <td>{invoice.rent}</td>
                             <td>{invoice.electricity}</td>
                             <td>{invoice.water}</td>
+                            <td>{invoice.fine || '-'}</td> {/* Add fine field */}
                             <td>{invoice.total}</td>
                             <td>
                                 <button
