@@ -41,7 +41,7 @@ const HouseInfo201 = () => {
     // Fetch invoices from Firestore
     const fetchInvoices = async () => {
         try {
-            const querySnapshot = await getDocs(collection(db, "invoices201"));
+            const querySnapshot = await getDocs(collection(db, "invoices"));
             const invoicesData: Invoice[] = [];
             querySnapshot.forEach((doc) => {
                 invoicesData.push({ id: doc.id, ...doc.data() } as Invoice);
@@ -115,13 +115,13 @@ const HouseInfo201 = () => {
 
             if (editingId) {
                 // Edit existing invoice
-                const invoiceRef = doc(db, "invoices201", editingId);
+                const invoiceRef = doc(db, "invoices", editingId);
                 await updateDoc(invoiceRef, invoiceData);
                 await fetchInvoices();
                 setEditingId(null);
             } else {
                 // Add new invoice
-                await addDoc(collection(db, "invoices201"), invoiceData);
+                await addDoc(collection(db, "invoices"), invoiceData);
                 await fetchInvoices();
             }
 
@@ -168,7 +168,7 @@ const HouseInfo201 = () => {
 
     const toggleStatus = async (invoice: Invoice) => {
         try {
-            const invoiceRef = doc(db, "invoices201", invoice.id!);
+            const invoiceRef = doc(db, "invoices", invoice.id!);
             await updateDoc(invoiceRef, { status: !invoice.status });
             fetchInvoices(); // Refresh invoice list
         } catch (e) {
@@ -178,7 +178,7 @@ const HouseInfo201 = () => {
 
     const handleDelete = async (id: string) => {
         try {
-            await deleteDoc(doc(db, "invoices201", id));
+            await deleteDoc(doc(db, "invoices", id));
             fetchInvoices(); // Refresh invoice list after deletion
         } catch (e) {
             console.error("Error deleting document: ", e);
