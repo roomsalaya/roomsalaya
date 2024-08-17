@@ -4,6 +4,7 @@ import { db, auth, storage } from '../firebaseConfig'; // Adjust the path as nee
 import Modal from 'react-modal';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { DownloadOutlined } from '@ant-design/icons';
+import './HouseInfo201.css';
 
 interface Invoice {
     id?: string;
