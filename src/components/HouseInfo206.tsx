@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { collection, addDoc, updateDoc, doc, getDocs, deleteDoc } from 'firebase/firestore';
-import { db, auth, storage } from '../firebaseConfig'; // ปรับเส้นทางตามความจำเป็น
+import { db, auth, storage } from '../firebaseConfig'; // Adjust the path as needed
 import Modal from 'react-modal';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { DownloadOutlined } from '@ant-design/icons';
@@ -13,10 +13,11 @@ interface Invoice {
     rent: string;
     electricity: string;
     water: string;
+    fine: string;
     total: string;
-    status: boolean; // true สำหรับจ่ายแล้ว, false สำหรับยังไม่จ่าย
-    createdAt?: { seconds: number }; // ฟิลด์ Timestamp จาก Firestore
-    fileURL?: string; // URL ของไฟล์
+    status: boolean; // true for paid, false for unpaid
+    createdAt?: { seconds: number }; // Timestamp field from Firestore
+    fileURL?: string; // URL of the file
 }
 
 const HouseInfo206 = () => {
@@ -28,26 +29,27 @@ const HouseInfo206 = () => {
         rent: '',
         electricity: '',
         water: '',
+        fine: '',
         total: '',
-        status: false, // ค่าเริ่มต้นเป็นยังไม่จ่าย
+        status: false, // Default status is unpaid
     });
     const [editingId, setEditingId] = useState<string | null>(null);
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [file, setFile] = useState<File | null>(null);
 
-    // ดึงข้อมูลใบแจ้งหนี้จาก Firestore
+    // Fetch invoices from Firestore
     const fetchInvoices = async () => {
         try {
-            const querySnapshot = await getDocs(collection(db, "invoices206")); // ใช้ชื่อ collection ที่ต่างกัน
+            const querySnapshot = await getDocs(collection(db, "invoices206"));
             const invoicesData: Invoice[] = [];
             querySnapshot.forEach((doc) => {
                 invoicesData.push({ id: doc.id, ...doc.data() } as Invoice);
             });
-            // เรียงใบแจ้งหนี้ตาม createdAt เพื่อแสดงใบใหม่ด้านล่างใบเก่า
+            // Sort invoices by createdAt
             invoicesData.sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
             setInvoices(invoicesData);
         } catch (e) {
-            console.error("เกิดข้อผิดพลาดในการดึงข้อมูลใบแจ้งหนี้: ", e);
+            console.error("Error fetching invoices: ", e);
         }
     };
 
@@ -60,7 +62,7 @@ const HouseInfo206 = () => {
         setForm({
             ...form,
             [name]: value,
-            total: name === 'rent' || name === 'electricity' || name === 'water'
+            total: ['rent', 'electricity', 'water', 'fine'].includes(name)
                 ? calculateTotal({ ...form, [name]: value })
                 : form.total,
         });
@@ -76,7 +78,9 @@ const HouseInfo206 = () => {
         const rent = parseFloat(form.rent) || 0;
         const electricity = parseFloat(form.electricity) || 0;
         const water = parseFloat(form.water) || 0;
-        return (rent + electricity + water).toFixed(2);
+        const fine = parseFloat(form.fine) || 0; // Include fine in total
+        const total = rent + electricity + water + fine;
+        return Math.round(total).toString(); // Convert to integer and then to string
     };
 
     const handleFileUpload = async () => {
@@ -95,7 +99,7 @@ const HouseInfo206 = () => {
         try {
             const user = auth.currentUser;
             if (!user) {
-                console.error("ไม่มีผู้ใช้งานที่ผ่านการยืนยัน");
+                console.error("No authenticated user");
                 return;
             }
 
@@ -109,14 +113,14 @@ const HouseInfo206 = () => {
             };
 
             if (editingId) {
-                // แก้ไขใบแจ้งหนี้ที่มีอยู่
-                const invoiceRef = doc(db, "invoices206", editingId); // ใช้ชื่อ collection ที่ต่างกัน
+                // Edit existing invoice
+                const invoiceRef = doc(db, "invoices206", editingId);
                 await updateDoc(invoiceRef, invoiceData);
                 await fetchInvoices();
                 setEditingId(null);
             } else {
-                // เพิ่มใบแจ้งหนี้ใหม่
-                await addDoc(collection(db, "invoices206"), invoiceData); // ใช้ชื่อ collection ที่ต่างกัน
+                // Add new invoice
+                await addDoc(collection(db, "invoices206"), invoiceData);
                 await fetchInvoices();
             }
 
@@ -127,20 +131,21 @@ const HouseInfo206 = () => {
                 rent: '',
                 electricity: '',
                 water: '',
+                fine: '',
                 total: '',
                 status: false,
             });
             setFile(null); // Clear file input
-            setModalIsOpen(false); // ปิด modal หลังจาก submit
+            setModalIsOpen(false); // Close modal after submit
         } catch (e) {
-            console.error("เกิดข้อผิดพลาดในการเพิ่ม/แก้ไขเอกสาร: ", e);
+            console.error("Error adding/updating document: ", e);
         }
     };
 
     const handleEdit = (invoice: Invoice) => {
         setForm(invoice);
         setEditingId(invoice.id || null);
-        setModalIsOpen(true); // เปิด modal เมื่อแก้ไข
+        setModalIsOpen(true); // Open modal when editing
     };
 
     const handleCancel = () => {
@@ -152,29 +157,30 @@ const HouseInfo206 = () => {
             rent: '',
             electricity: '',
             water: '',
+            fine: '',
             total: '',
             status: false,
         });
         setFile(null); // Clear file input
-        setModalIsOpen(false); // ปิด modal เมื่อยกเลิก
+        setModalIsOpen(false); // Close modal when canceling
     };
 
     const toggleStatus = async (invoice: Invoice) => {
         try {
-            const invoiceRef = doc(db, "invoices206", invoice.id!); // ใช้ชื่อ collection ที่ต่างกัน
+            const invoiceRef = doc(db, "invoices206", invoice.id!);
             await updateDoc(invoiceRef, { status: !invoice.status });
-            fetchInvoices(); // รีเฟรชรายการใบแจ้งหนี้
+            fetchInvoices(); // Refresh invoice list
         } catch (e) {
-            console.error("เกิดข้อผิดพลาดในการอัปเดตสถานะ: ", e);
+            console.error("Error updating status: ", e);
         }
     };
 
     const handleDelete = async (id: string) => {
         try {
-            await deleteDoc(doc(db, "invoices206", id)); // ใช้ชื่อ collection ที่ต่างกัน
-            fetchInvoices(); // รีเฟรชรายการใบแจ้งหนี้หลังจากลบ
+            await deleteDoc(doc(db, "invoices206", id));
+            fetchInvoices(); // Refresh invoice list after deletion
         } catch (e) {
-            console.error("เกิดข้อผิดพลาดในการลบเอกสาร: ", e);
+            console.error("Error deleting document: ", e);
         }
     };
 
@@ -251,6 +257,15 @@ const HouseInfo206 = () => {
                         placeholder='ค่าน้ำ'
                         required
                     />
+                    <label htmlFor='fine'>ค่าปรับ:</label>
+                    <input
+                        type='number'
+                        id='fine'
+                        name='fine'
+                        value={form.fine}
+                        onChange={handleChange}
+                        placeholder='ค่าปรับ'
+                    />
                     <label htmlFor='total'>รวม:</label>
                     <input
                         type='number'
@@ -268,10 +283,9 @@ const HouseInfo206 = () => {
                         id='file'
                         onChange={handleFileChange}
                     />
-                    <button type='submit'>{editingId ? 'บันทึกการเปลี่ยนแปลง' : 'เพิ่มใบแจ้งหนี้'}</button>
+                    <button type='submit'>{editingId ? 'บันทึกการแก้ไข' : 'เพิ่มใบแจ้งหนี้'}</button>
                     <button type='button' onClick={handleCancel}>ยกเลิก</button>
                 </form>
-
             </Modal>
             <table>
                 <thead>
@@ -282,10 +296,11 @@ const HouseInfo206 = () => {
                         <th>ค่าเช่า</th>
                         <th>ค่าไฟ</th>
                         <th>ค่าน้ำ</th>
+                        <th>ค่าปรับ</th>
                         <th>รวม</th>
                         <th>สถานะ</th>
-                        <th>ไฟล์ PDF</th> {/* Add new column for file */}
-                        <th>การกระทำ</th>
+                        <th>ไฟล์</th>
+                        <th>ดำเนินการ</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -297,28 +312,22 @@ const HouseInfo206 = () => {
                             <td>{invoice.rent}</td>
                             <td>{invoice.electricity}</td>
                             <td>{invoice.water}</td>
+                            <td>{invoice.fine}</td>
                             <td>{invoice.total}</td>
-                            <td className={invoice.status ? 'paid-status' : 'unpaid-status'}>
-                                {invoice.status ? 'อนุมัติชำระ' : 'รออนุมัติชำระ'}
-                            </td>
+                            <td>{invoice.status ? 'จ่ายแล้ว' : 'ยังไม่จ่าย'}</td>
                             <td>
-                                <td>
-                                    {invoice.fileURL ? (
-                                        <a href={invoice.fileURL} target="_blank" rel="noopener noreferrer" className='download-link'>
-                                            <DownloadOutlined /> PDF
-                                        </a>
-                                    ) : '-'}
-                                </td>
-
+                                {invoice.fileURL ? (
+                                    <a href={invoice.fileURL} target="_blank" rel="noopener noreferrer" className='download-link'>
+                                        <DownloadOutlined /> PDF
+                                    </a>
+                                ) : '-'}
                             </td>
                             <td>
                                 <button className='edit-button' onClick={() => handleEdit(invoice)}>แก้ไข</button>
                                 <button className='toggle-status-button' onClick={() => toggleStatus(invoice)}>
-                                    {invoice.status ? 'ยกเลิกอนุมัติ' : 'อนุมัติ'}
+                                    {invoice.status ? 'ยังไม่จ่าย' : 'จ่ายแล้ว'}
                                 </button>
-                                <button className='delete-button' onClick={() => handleDelete(invoice.id!)}>
-                                    ลบ
-                                </button>
+                                <button className='delete-button' onClick={() => handleDelete(invoice.id!)}>ลบ</button>
                             </td>
                         </tr>
                     ))}
