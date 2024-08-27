@@ -6,7 +6,7 @@ const UserPage228: React.FC = () => {
     // const navigate = useNavigate(); // Remove if not used
 
     return (
-        <div className='user-container'> {/* Adjusted class name to follow convention */}
+        <div className='User-container'> {/* Adjusted class name to follow convention */}
             <h3>ห้อง 228</h3>
             <div className='menu-container'>
                 <AppMenu228 />
